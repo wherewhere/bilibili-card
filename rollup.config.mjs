@@ -163,13 +163,13 @@ function* getJSConfigs(fileName, name, types) {
 
 /** @type {import("rollup").RollupOptions[]} */
 export default [{
-    input: "src/index.es.ts",
+    input: "src/index.esm.ts",
     output: {
         format: "es",
         sourcemap: true,
         dir: "dist",
         entryFileNames: "[name].js",
-        chunkFileNames: "[name].es.js",
+        chunkFileNames: "[name].esm.js",
         manualChunks: {
             "helpers": ["src/helpers/builder", "src/helpers/polyfill", "src/helpers/url"],
             "components/bilibili-card": ["src/components/bilibili-card"],
@@ -185,7 +185,7 @@ export default [{
     },
     plugins: esPlugin
 }, {
-    input: "src/index.es.ts",
+    input: "src/index.esm.ts",
     output: {
         format: "es",
         dir: "dist",
