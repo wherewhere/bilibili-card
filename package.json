@@ -2,8 +2,8 @@
   "name": "bilibili-card",
   "version": "1.0.8",
   "description": "A web components insert a bilibili video card into your page or article, some of css code is copy from bilibili.",
-  "main": "index.js",
-  "module": "components/index.esm.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.esm.d.ts",
   "scripts": {
     "dev": "vite ./dev",
     "build": "rollup -c",
@@ -68,6 +68,7 @@
     "vue-router": "^4.0.0"
   },
   "dependencies": {
-    "jsdom": "^26.0.0"
+    "jsdom": "^26.0.0",
+    "vue-shadow-dom": "^4.0.0"
   }
 }

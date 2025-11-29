@@ -126,7 +126,9 @@
                 </template>
                 <div v-if="example" style="max-width: 100%;">
                     <bilibili-card v-if="exampleType === 'components'" v-bind="props" />
-                    <div v-else-if="exampleType === 'html'" v-html="example"></div>
+                    <ShadowRoot v-else-if="exampleType === 'html'">
+                        <div v-html="example"></div>
+                    </ShadowRoot>
                     <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" />
                     <HighlightJS language="html" :code="example"
                         style="margin-top: calc(var(--design-unit) * 1px); margin-bottom: 0; border-radius: 6px;" />
@@ -151,6 +153,7 @@ import { createHost, createHostWithTagName, createCardWithTagName } from "../../
 import { getTheme } from "../../src/helpers/theme";
 import type { cardInfo } from "../../src/helpers/types";
 import type { Props } from "../../src/components/bilibili-card.vue";
+import { ShadowRoot } from "vue-shadow-dom";
 import hljs from "@highlightjs/vue-plugin";
 import BiliBiliCard from "../../src/components/bilibili-card.vue";
 import InputLabel from "../components/InputLabel.vue";

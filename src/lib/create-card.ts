@@ -1,6 +1,3 @@
-/* global hexo */
-"use strict";
-
 import type { cardType, themeType } from "../helpers/types";
 import * as bilibiliCardMessage from "../tools/bilibili-card-message";
 import * as bilibiliCardBuilder from "../tools/bilibili-card-builder";

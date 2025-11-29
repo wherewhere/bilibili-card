@@ -155,7 +155,7 @@ export default defineConfig({
 
 ```vue
 <template>
-  <BiliBiliCard />
+  <BiliBiliCard theme="theme" />
 </template>
 
 <script setup>
@@ -167,9 +167,29 @@ import BiliBiliCard from "bilibili-card:{ID}?proxy=&type=&info-types=";
 
 | 属性名 | 描述 | 可选值 | 默认值 | 示例 |
 |-------|------|-------|-------|-----|
+| theme | 样式 | css 文件地址 | 空 | https://unpkg.com/bilibili-card/src/styles/bilibili-card.css |
 | pathname | 媒体 ID | 视频：AV, BV；~~专栏：CV~~；番剧：MD；音频：AU | 空，将跳过生成 | BV1y54y1a768 |
 | type | 卡片类型 | video, ~~article~~, user, live, bangumi, audio, dynamic, favorite, ~~album~~ | 自动识别 AV, BV, ~~CV~~, MD, AU，识别失败视为 video | video |
 | info-types | 显示信息 | views, danmakus, comments, favorites, coins, likes | 空，由 bilibili-card 分配默认值 | views danmakus |
+
+定义文件可导入
+
+```ts
+/// <reference types="bilibili-card/src/lib/bilibili-card" />
+```
+
+或添加
+
+```ts
+declare module "bilibili-card:*" {
+  import type { defineComponent, HTMLAttributes } from "vue";
+  interface BilibiliCardProps extends HTMLAttributes {
+    theme?: string;
+  }
+  const component: ReturnType<typeof defineComponent<BilibiliCardProps>>;
+  export default component;
+}
+```
 
 完整示例
 
