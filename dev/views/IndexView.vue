@@ -25,7 +25,7 @@ const example = shallowRef(
     `<bilibili-card vid="BV1y54y1a768" type="video" title="【UWP】手把手教你安装 UWP 安装包" author="where-where"
     cover="http://i2.hdslb.com/bfs/archive/41bc750cb5011bb036e008a716a89158c7eb7bb5.jpg" duration="05:21" views="2.2万"
     danmakus="4" comments="75" favorites="253" coins="106" likes="287" info-types="views danmakus"
-    theme="system"></bilibili-card>`);
+    theme="fluent"></bilibili-card>`);
 </script>
 
 <style lang="scss" scoped>

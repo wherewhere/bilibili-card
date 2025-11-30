@@ -4,15 +4,13 @@ import type {
     themeType,
     cardInfo,
     IBiliBiliCard
-} from "../helpers/types";
+} from "../types";
 
 import "../helpers/polyfill";
 
-import { initDOM } from "../helpers/node";
-const { window, document } = initDOM();
-export { window };
-
 import {
+    window,
+    document,
     getDefaultInfoTypes,
     defaultTitle,
     defaultAuthor,
@@ -23,12 +21,13 @@ import {
     attributeChangedCallback,
     getInfo
 } from "../helpers/builder";
+export { window };
 
-export function createHost<T extends cardType = "video">(imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType) {
+export function createHost<T extends cardType>(imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType) {
     return createHostWithTagName("bilibili-card", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
 }
 
-export function createHostWithTagName<T extends cardType = "video">(tagName: string, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType) {
+export function createHostWithTagName<K extends string, T extends cardType>(tagName: K, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType): K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : HTMLElement {
     const bilibiliCard = document.createElement(tagName);
     if (vid) {
         bilibiliCard.setAttribute("vid", vid);
@@ -75,22 +74,22 @@ export function createHostWithTagName<T extends cardType = "video">(tagName: str
     if (theme) {
         bilibiliCard.setAttribute("theme", theme);
     }
-    return bilibiliCard;
+    return bilibiliCard as any;
 }
 
-declare interface BiliBiliCard extends IBiliBiliCard {
-    host: Element;
+declare interface BiliBiliCard<T extends Element = Element> extends IBiliBiliCard {
+    host: T;
     observer?: MutationObserver;
     attributeChangedCallback(name: string | null, oldValue: string | null, newValue: string | null): void;
 }
 
-declare interface BiliBiliCardElement extends Element {
-    bilibiliCard: BiliBiliCard;
+declare type BiliBiliCardElement<T extends Element = Element> = T & {
+    bilibiliCard: BiliBiliCard<T>;
 }
 
-function initHost(host: Element) {
-    const bilibiliCard: BiliBiliCard = {
-        contents: undefined as any,
+function initHost<T extends Element = Element>(host: T) {
+    const bilibiliCard: BiliBiliCard<T> = {
+        contents: undefined!,
         host: host,
         getAttribute(qualifiedName) {
             return this.host.getAttribute(qualifiedName);
@@ -188,7 +187,7 @@ function initHost(host: Element) {
 
         get infoTypes() {
             const value = this.getAttribute("info-types");
-            if (typeof value === "string") {
+            if (value && typeof value === "string") {
                 const types = value.split(/[,|\s+]/).filter(x => x != '');
                 if (types.length) {
                     return types as infoType[];
@@ -223,11 +222,11 @@ function initHost(host: Element) {
 
     const shadowRoot = host;
     initCard.call(bilibiliCard, shadowRoot);
-    (host as BiliBiliCardElement).bilibiliCard = bilibiliCard;
-    return host as BiliBiliCardElement;
+    (host as BiliBiliCardElement<T>).bilibiliCard = bilibiliCard;
+    return host as BiliBiliCardElement<T>;
 }
 
-function attachHost(host: BiliBiliCardElement) {
+function attachHost<T extends Element = Element>(host: BiliBiliCardElement<T>) {
     host.bilibiliCard.connectedCallback();
 }
 
@@ -235,7 +234,7 @@ export function createCard<T extends cardType>(imageProxy: string, infoTypes: st
     return createCardWithTagName("div", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
 }
 
-export function createCardWithTagName<T extends cardType>(tagName: string, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType) {
+export function createCardWithTagName<K extends string, T extends cardType>(tagName: K, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType) {
     const bilibiliCard = createHostWithTagName(tagName, imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
     praseElement(bilibiliCard);
     return bilibiliCard;
@@ -247,11 +246,11 @@ export function praseElement(element: Element) {
     }
 }
 
-export function registerObserver(element: BiliBiliCardElement) {
+export function registerObserver<T extends Element = Element>(element: BiliBiliCardElement<T>) {
     const observer = new MutationObserver(mutationsList => {
         for (const mutation of mutationsList) {
-            if (mutation.type === 'attributes') {
-                (mutation.target as BiliBiliCardElement).bilibiliCard.attributeChangedCallback(mutation.attributeName, mutation.oldValue, (mutation.target as HTMLElement).getAttribute(mutation.attributeName!));
+            if (mutation.type === "attributes") {
+                (mutation.target as BiliBiliCardElement<T>).bilibiliCard.attributeChangedCallback(mutation.attributeName, mutation.oldValue, (mutation.target as HTMLElement).getAttribute(mutation.attributeName!));
             }
         }
     });

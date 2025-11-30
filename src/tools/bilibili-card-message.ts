@@ -1,4 +1,4 @@
-import type { cardInfo, cardType } from "../helpers/types";
+import type { cardInfo, cardType } from "../types";
 
 function formatLargeNumber(num: number): string {
     return (num >= 1E8)

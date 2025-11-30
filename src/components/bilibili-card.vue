@@ -1,6 +1,6 @@
 <template>
     <ShadowRoot>
-        <link v-if="theme" :href="themeUrl" rel="stylesheet" />
+        <link v-if="themeUrl" :href="themeUrl" rel="stylesheet" />
         <div class="video-holder">
             <a class="default-flex full-width" target="_blank" rel="noopener noreferrer" :href="url"
                 style="max-height: 92px; display: flex; align-items: center;">
@@ -53,7 +53,7 @@ import { computed } from "vue";
 import { getBackgroundUrl } from "../helpers/url";
 import { getTheme } from "../helpers/theme";
 import { defaultTitle, defaultAuthor, defaultDuration, defaultProxy, defaultTheme, canPlay, hasDuration, getIcon, getTypeName, getUrl, getDefaultInfoTypes } from "../helpers/builder";
-import type { themeType, infoType, cardType } from "../helpers/types";
+import type { themeType, infoType, cardType } from "../types";
 import { ShadowRoot } from "vue-shadow-dom";
 
 export interface Props {
@@ -63,12 +63,12 @@ export interface Props {
     author?: string;
     cover?: string;
     duration?: string;
-    views?: string;
-    danmakus?: string;
-    comments?: string;
-    favorites?: string;
-    coins?: string;
-    likes?: string;
+    views?: string | number;
+    danmakus?: string | number;
+    comments?: string | number;
+    favorites?: string | number;
+    coins?: string | number;
+    likes?: string | number;
     infoTypes?: string | infoType[];
     imageProxy?: string;
     theme?: themeType;
@@ -104,5 +104,5 @@ const infos = computed(() => {
         };
     });
 });
-const themeUrl = computed(() => getTheme(theme || defaultTheme as themeType));
+const themeUrl = computed(() => getTheme(theme || defaultTheme));
 </script>

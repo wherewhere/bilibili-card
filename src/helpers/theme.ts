@@ -1,5 +1,4 @@
-import type { themeType } from "../helpers/types";
-
+import type { themeType } from "../types";
 import bilibiliCard from "../components/bilibili-card.css.ts";
 import lightTheme from "../components/bilibili-card.light.css.ts";
 import darkTheme from "../components/bilibili-card.dark.css.ts";

@@ -1,6 +1,8 @@
+/// <reference types="./markdown" />
 import type { Plugin } from "vite";
 import MarkdownIt from "markdown-it-async";
 import hljs from "markdown-it-highlightjs";
+import { definer } from "highlightjs-vue/dist/highlightjs-vue.esm.js";
 
 export default {
     name: "markdown",
@@ -12,7 +14,9 @@ export default {
             html: true,
             linkify: true,
             typographer: true
-        }).use(hljs);
+        }).use(hljs, {
+            register: { vue: definer }
+        });
         const html = await md.renderAsync(code, { id });
         return {
             code: `<template>\n${html}\n</template>`,

@@ -1,7 +1,19 @@
 <template>
     <div class="layout">
         <div class="header" style="height: 50px;">
-            <div class="header-gutters">{{ name }}</div>
+            <div class="header-gutters">
+                <span>
+                    {{ name }}
+                    <svg id="title-info" width="12" height="12" viewBox="0 0 12 12" style="margin-bottom: -1px;">
+                        <path
+                            d="M5.5 6.5a.5.5 0 0 1 1 0V8a.5.5 0 0 1-1 0V6.5ZM6 3.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM1 6a5 5 0 1 1 10 0A5 5 0 0 1 1 6Zm5-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z">
+                        </path>
+                    </svg>
+                </span>
+                <fluent-tooltip class="title-tooltip" anchor="title-info">
+                    <BiliBiliCard :theme="theme" style="min-width: 300px;" />
+                </fluent-tooltip>
+            </div>
             <div style="flex-grow: 1;"></div>
             <a class="header-button header-theme" :title="colorSchemeTitle" href="javascript:void(0)" role="button"
                 @click="switchColorScheme">
@@ -59,19 +71,22 @@ import { computed, shallowRef, watch } from "vue";
 import { useSeoMeta } from "@unhead/vue";
 import { useRoute } from "vue-router";
 import { name, keywords } from "../package.json";
+import theme from "../src/styles/bilibili-card.fluent.css?url";
 import year from "javascript:new Date().getFullYear()";
+import BiliBiliCard from "bilibili-card:BV1HJu1zzEH3";
 
 const author = "wherewhere";
+const description = "一个 Web 组件，在你的文章中插入哔哩哔哩卡片，样式模仿和借鉴自哔哩哔哩"
 useSeoMeta({
     // Basic SEO
     title: name,
-    description: "一个 Hexo 插件，在你的文章中插入哔哩哔哩卡片，样式模仿和借鉴自哔哩哔哩",
+    description,
     author: author,
     keywords: keywords.join(", "),
 
     // Open Graph
     ogTitle: name,
-    ogDescription: "一个 Hexo 插件，在你的文章中插入哔哩哔哩卡片，样式模仿和借鉴自哔哩哔哩",
+    ogDescription: description,
     ogType: "website",
     ogLocale: "zh_CN",
     ogSiteName: name,
@@ -170,6 +185,30 @@ body,
 </style>
 
 <style lang="scss" scoped>
+:deep(fluent-tooltip.title-tooltip)::part(tooltip),
+:deep(fluent-tooltip.title-tooltip) .tooltip {
+    padding: 0;
+}
+
+:deep(fluent-tooltip.title-tooltip)::part(tooltip)::after,
+:deep(fluent-tooltip.title-tooltip) .tooltip::after {
+    display: none;
+}
+
+:deep(fluent-tooltip.title-tooltip) {
+    .video-holder {
+        border-radius: calc(var(--control-corner-radius) * 1px);
+
+        .cover-box {
+            border-radius: calc(var(--control-corner-radius) * 1px) 0 0 calc(var(--control-corner-radius) * 1px);
+        }
+
+        .video-content-container {
+            border-radius: 0 calc(var(--control-corner-radius) * 1px) calc(var(--control-corner-radius) * 1px) 0;
+        }
+    }
+}
+
 .layout {
     width: 100%;
     height: 100%;

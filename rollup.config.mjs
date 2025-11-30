@@ -69,107 +69,16 @@ const iifeFallbackPlugin = [resolveConfig, babelIIFEFallbackConfig, postcssFallb
 const cjsPlugin = [resolveConfig, babelCJSConfig, urlConfig];
 const dtsPlugin = [dtsConfig, postcssConfig];
 
-/**
- * @param {string} fileName
- * @returns {import("rollup").RollupOptions}
- */
-function getESConfig(fileName, fallback = false) {
-    return {
-        input: `src/${fileName}.ts`,
-        output: {
-            sourcemap: true,
-            format: "es",
-            file: fallback ? `dist/fallback/${fileName}.esm.js` : `dist/${fileName}.esm.js`,
-        },
-        plugins: fallback ? esFallbackPlugin : esPlugin
-    };
-}
-
-/**
- * @param {string} fileName
- * @param {string} name
- * @returns {import("rollup").RollupOptions}
- */
-function getIIFEConfig(fileName, name, fallback = false) {
-    return {
-        input: `src/${fileName}.ts`,
-        output: {
-            sourcemap: true,
-            format: "iife",
-            file: fallback ? `dist/fallback/${fileName}.js` : `dist/${fileName}.js`,
-            name
-        },
-        plugins: fallback ? iifeFallbackPlugin : iifePlugin
-    };
-}
-
-/**
- * @param {string} fileName
- * @returns {import("rollup").RollupOptions}
- */
-function getCJSConfig(fileName) {
-    return {
-        input: `src/${fileName}.ts`,
-        output: {
-            sourcemap: true,
-            format: "cjs",
-            file: `dist/${fileName}.cjs`
-        },
-        plugins: cjsPlugin
-    };
-}
-
-/**
- * @param {string} fileName
- * @returns {import("rollup").RollupOptions}
- */
-function getDTSConfig(fileName, fallback = false) {
-    return {
-        input: `src/${fileName}.ts`,
-        output: {
-            format: "es",
-            file: fallback ? `dist/fallback/${fileName}.d.ts` : `dist/${fileName}.d.ts`,
-        },
-        plugins: dtsPlugin
-    };
-}
-
-/**
- * @param {string} fileName
- * @param {string} name
- * @param {import("rollup").ModuleFormat[]} types
- */
-function* getJSConfigs(fileName, name, types) {
-    for (const type of types) {
-        switch (type) {
-            case "es":
-                yield getESConfig(fileName);
-                yield getESConfig(fileName, true);
-                break;
-            case "iife":
-                yield getIIFEConfig(fileName, name);
-                yield getIIFEConfig(fileName, name, true);
-                break;
-            case "dts":
-                yield getDTSConfig(fileName);
-                yield getDTSConfig(fileName, true);
-                break;
-            case "cjs":
-                yield getCJSConfig(fileName);
-                break;
-        }
-    }
-}
-
 /** @type {import("rollup").RollupOptions[]} */
 export default [{
-    input: "src/index.esm.ts",
+    external: ["@vue/compiler-sfc", "jsdom"],
+    input: "src/index.ts",
     output: {
         format: "es",
         sourcemap: true,
         dir: "dist",
         entryFileNames: "[name].js",
-        chunkFileNames: "[name].esm.js",
+        chunkFileNames: "[name].js",
         manualChunks: {
             "helpers": ["src/helpers/builder", "src/helpers/polyfill", "src/helpers/url"],
             "components/bilibili-card": ["src/components/bilibili-card"],
@@ -178,31 +87,8 @@ export default [{
             "components/bilibili-card.fluent.css": ["src/components/bilibili-card.fluent.css"],
             "components/bilibili-card.light.css": ["src/components/bilibili-card.light.css"],
             "components/bilibili-card.windose.css": ["src/components/bilibili-card.windose.css"],
-            "tools/bilibili-card-builder": ["src/tools/bilibili-card-builder"],
-            "tools/bilibili-card-message": ["src/tools/bilibili-card-message"]
-        },
-        minifyInternalExports: false
-    },
-    plugins: esPlugin
-}, {
-    input: "src/index.esm.ts",
-    output: {
-        format: "es",
-        dir: "dist",
-        entryFileNames: "[name].d.ts"
-    },
-    plugins: dtsPlugin
-}, {
-    input: "src/index.cjs.ts",
-    output: {
-        format: "cjs",
-        sourcemap: true,
-        dir: "dist",
-        entryFileNames: "[name].js",
-        chunkFileNames: "[name].cjs.js",
-        exports: "auto",
-        manualChunks: {
             "lib/create-card": ["src/lib/create-card"],
+            "lib/bilibili-card": ["src/lib/bilibili-card"],
             "tools/bilibili-card-builder": ["src/tools/bilibili-card-builder"],
             "tools/bilibili-card-message": ["src/tools/bilibili-card-message"]
         },
@@ -210,15 +96,15 @@ export default [{
     },
     plugins: esPlugin
 }, {
-    input: "src/index.cjs.ts",
+    input: "src/index.ts",
     output: {
         format: "es",
         dir: "dist",
-        entryFileNames: "[name].d.ts"
+        entryFileNames: "[name].d.ts",
+        chunkFileNames: "[name].d.ts",
+        manualChunks: {
+            "components/bilibili-card": ["src/components/bilibili-card"],
+        }
     },
     plugins: dtsPlugin
-}
-    // ...getJSConfigs("tools/bilibili-card-builder", "biliBiliCardBuilder", ["iife"]),
-    // ...getJSConfigs("tools/bilibili-card-message", "biliBiliCardMessage", ["iife"]),
-    // ...getJSConfigs("components/bilibili-card/bilibili-card", "BiliBiliCard", ["iife"])
-];
+}];

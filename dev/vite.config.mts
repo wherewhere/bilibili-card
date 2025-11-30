@@ -2,9 +2,10 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import simpleHtmlPlugin from "vite-plugin-simple-html";
-import markdown from "./helpers/markdown.mts";
+import markdown from "./helpers/markdown";
 import eval from "./helpers/eval.mts";
-import githubImporter from "./helpers/github-importer.mts";
+import githubImporter from "./helpers/github-importer";
+import bilibiliCard from "../src/lib/bilibili-card";
 
 export default defineConfig({
     root: "dev",
@@ -27,6 +28,7 @@ export default defineConfig({
                 tagOmission: false
             }
         }),
+        bilibiliCard(),
         markdown,
         eval
     ],

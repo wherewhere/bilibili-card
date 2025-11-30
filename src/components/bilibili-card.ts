@@ -3,7 +3,7 @@ import type {
     infoType,
     themeType,
     IBiliBiliCard
-} from "../helpers/types";
+} from "../types";
 
 import "../helpers/polyfill";
 
@@ -143,7 +143,7 @@ export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
 
     get infoTypes() {
         const value = this.getAttribute("info-types");
-        if (typeof value === "string") {
+        if (value && typeof value === "string") {
             const types = value.split(/[,|\s+]/).filter(x => x != '');
             if (types.length) {
                 return types as infoType[];

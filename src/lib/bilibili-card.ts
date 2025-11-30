@@ -1,5 +1,6 @@
 import type { Plugin } from "vite";
-import { compileSFC } from "./compiler-sfc.mts";
+import type { cardType } from "../types";
+import { compileSFC } from "./compiler-sfc";
 import createCardAsync from "./create-card";
 
 export default function bilibiliCard(options = { image_proxy: "https://images.weserv.nl/?url=" }): Plugin {
@@ -18,12 +19,13 @@ export default function bilibiliCard(options = { image_proxy: "https://images.we
                 const imageProxy = searchParams.get("proxy") || options.image_proxy;
                 const type = searchParams.get("type") || undefined;
                 const info = searchParams.get("info-types") || undefined;
-                const card = await createCardAsync(imageProxy, [pathname, type!, info!], false);
+                const card = await createCardAsync(imageProxy, pathname, type as cardType, info!, "system", false);
+                if (!card) { return; }
                 const code = [
                     "<template>",
                     "<ShadowRoot>",
                     '<link v-if="theme" :href="theme" rel="stylesheet" />',
-                    card,
+                    card.outerHTML,
                     "</ShadowRoot>",
                     "</template>",
                     '',

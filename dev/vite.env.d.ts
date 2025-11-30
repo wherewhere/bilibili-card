@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-svg-loader" />
+/// <reference types="../src/types/bilibili-card" />
 
 declare module "*.md" {
     import type { defineComponent } from "vue";

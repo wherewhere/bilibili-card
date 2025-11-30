@@ -1,9 +1,9 @@
 {
   "name": "bilibili-card",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A web components insert a bilibili video card into your page or article, some of css code is copy from bilibili.",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.esm.d.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite ./dev",
     "build": "rollup -c",
@@ -43,15 +43,15 @@
     "@babel/preset-typescript": "^7.0.0",
     "@fluentui/svg-icons": "^1.0.0",
     "@fluentui/web-components": "^2.0.0",
-    "@highlightjs/vue-plugin": "^2.1.0",
+    "@highlightjs/vue-plugin": "^2.0.0",
     "@rollup/plugin-babel": "^6.0.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-url": "^8.0.0",
     "@types/babel__core": "^7.0.0",
-    "@types/hexo": "^3.0.0",
     "@unhead/vue": "^2.0.0",
     "@vitejs/plugin-vue": "^6.0.0",
     "color-scheme-checker": "^0.0.1",
+    "highlightjs-vue": "^1.0.0",
     "js-beautify": "^1.0.0",
     "markdown-it-async": "^2.2.0",
     "markdown-it-highlightjs": "^4.0.0",
@@ -68,7 +68,7 @@
     "vue-router": "^4.0.0"
   },
   "dependencies": {
-    "jsdom": "^26.0.0",
+    "jsdom": "^27.0.0",
     "vue-shadow-dom": "^4.0.0"
   }
 }

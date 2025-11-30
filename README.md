@@ -20,7 +20,7 @@ npm i bilibili-card
 复制以下代码到 HTML 文件中查看
 
 ```html
-<script type="module" src="https://unpkg.com/bilibili-card/dist/components/bilibili-card.es.js" async></script>
+<script type="module" src="https://unpkg.com/bilibili-card/dist/components/bilibili-card.js" async></script>
 <bilibili-card vid="BV1y54y1a768" type="video" title="【UWP】手把手教你安装 UWP 安装包" author="where-where"
   cover="http://i2.hdslb.com/bfs/archive/41bc750cb5011bb036e008a716a89158c7eb7bb5.jpg" duration="05:21" views="2.2万"
   danmakus="4" comments="75" favorites="253" coins="106" likes="287" info-types="views danmakus"
@@ -53,7 +53,7 @@ SVG 预览
 在 Head 中引入
 
 ```html
-<script type="module" src="https://unpkg.com/bilibili-card/dist/components/bilibili-card.es.js" async></script>
+<script type="module" src="https://unpkg.com/bilibili-card/dist/components/bilibili-card.js" async></script>
 ```
 
 在文章中插入
@@ -106,7 +106,7 @@ import BiliBiliCard from "bilibili-card/src/components/bilibili-card.vue";
 <link rel="stylesheet" href="https://unpkg.com/bilibili-card/src/styles/bilibili-card.css">
 <div id="host"></div>
 <script type="module">
-  import { bilibiliCardBuilder } from "https://unpkg.com/bilibili-card/dist/tools/bilibili-card-builder.esm.js";
+  import { bilibiliCardBuilder } from "https://unpkg.com/bilibili-card/dist/tools/bilibili-card-builder.js";
   const card = bilibiliCardBuilder.createCard(
     undefined,
     "views danmakus",
@@ -134,7 +134,7 @@ import BiliBiliCard from "bilibili-card/src/components/bilibili-card.vue";
 
 在 `vite.config` 中引入
 ```js
-import bilibiliCard from "bilibili-card/src/lib/bilibili-card.mts";
+import bilibiliCard from "bilibili-card/dist/lib/bilibili-card.js";
 
 export default defineConfig({
   plugins: [
@@ -175,7 +175,7 @@ import BiliBiliCard from "bilibili-card:{ID}?proxy=&type=&info-types=";
 定义文件可导入
 
 ```ts
-/// <reference types="bilibili-card/src/lib/bilibili-card" />
+/// <reference types="bilibili-card/src/types/bilibili-card" />
 ```
 
 或添加
