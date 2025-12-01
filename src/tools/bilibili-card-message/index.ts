@@ -1,4 +1,4 @@
-import type { cardInfo, cardType } from "../types";
+import type { CardInfo, CardType } from "../../types";
 
 function formatLargeNumber(num: number): string {
     return (num >= 1E8)
@@ -8,7 +8,7 @@ function formatLargeNumber(num: number): string {
             : num as any;
 }
 
-function formatSecondsToTime(second: number) {
+function formatSecondsToTime(second: number): string {
     const sec = second % 60;
     const min = Math.floor(second / 60) % 60;
     const hour = Math.floor(second / 3600);
@@ -18,7 +18,7 @@ function formatSecondsToTime(second: number) {
     }
     times.push(min);
     times.push(sec);
-    return times.map(n => n.toString().padStart(2, '0')).join(':');
+    return times.map(n => n.toString().padStart(2, '0')).join(':') as any;
 }
 
 function getVid(id: string) {
@@ -40,7 +40,7 @@ function getVid(id: string) {
     }
 }
 
-export function getApi(id: string, type: cardType) {
+export function getApi(id: string, type: CardType) {
     switch (type) {
         case "video":
             const vid = getVid(id);
@@ -81,7 +81,7 @@ export function getApi(id: string, type: cardType) {
     }
 }
 
-function getVideoMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"video"> {
+function getVideoMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"video"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -162,7 +162,7 @@ function getVideoMessage(id: string, token: any, log: { warn: (data: string) => 
     }
 }
 
-function getArticleMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"article"> {
+function getArticleMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"article"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -220,7 +220,7 @@ function getArticleMessage(id: string, token: any, log: { warn: (data: string) =
     }
 }
 
-function getUserMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"user"> {
+function getUserMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"user"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -268,9 +268,9 @@ function getUserMessage(id: string, token: any, log: { warn: (data: string) => v
     }
 }
 
-function getLiveMessage<T extends ((id: string, console: { warn: (data: string) => void; }) => Promise<cardInfo<"user">>) | undefined>(id: string, token: any, getUser: T, log: { warn: (data: string) => void; } = console): (T extends undefined
-    ? cardInfo<"live">
-    : Promise<cardInfo<"live">>) | {
+function getLiveMessage<T extends ((id: string, console: { warn: (data: string) => void; }) => Promise<CardInfo<"user">>) | undefined>(id: string, token: any, getUser: T, log: { warn: (data: string) => void; } = console): (T extends undefined
+    ? CardInfo<"live">
+    : Promise<CardInfo<"live">>) | {
         vid: string;
         type: "live";
         title: string;
@@ -331,7 +331,7 @@ function getLiveMessage<T extends ((id: string, console: { warn: (data: string) 
     }
 }
 
-function getBangumiMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"bangumi"> {
+function getBangumiMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"bangumi"> {
     switch (token?.code) {
         case 0:
             const data = token?.result;
@@ -385,7 +385,7 @@ function getBangumiMessage(id: string, token: any, log: { warn: (data: string) =
     }
 }
 
-function getAudioMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"audio"> {
+function getAudioMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"audio"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -429,7 +429,7 @@ function getAudioMessage(id: string, token: any, log: { warn: (data: string) => 
     }
 }
 
-function getDynamicMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"dynamic"> {
+function getDynamicMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"dynamic"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -503,7 +503,7 @@ function getDynamicMessage(id: string, token: any, log: { warn: (data: string) =
     }
 }
 
-function getFavoriteMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"favorite"> {
+function getFavoriteMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"favorite"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -558,7 +558,7 @@ function getFavoriteMessage(id: string, token: any, log: { warn: (data: string) 
     }
 }
 
-function getAlbumMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<"album"> {
+function getAlbumMessage(id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<"album"> {
     switch (token?.code) {
         case 0:
             const data = token?.data;
@@ -608,84 +608,84 @@ function getAlbumMessage(id: string, token: any, log: { warn: (data: string) => 
     }
 }
 
-export function getMessage<T extends cardType>(type: T, id: string, token: any, log: { warn: (data: string) => void; } = console): cardInfo<T> {
+export function getMessage<T extends CardType>(type: T, id: string, token: any, log: { warn: (data: string) => void; } = console): CardInfo<T> {
     switch (type) {
         case "video":
-            return getVideoMessage(id, token, log) as cardInfo<T>;
+            return getVideoMessage(id, token, log) as CardInfo<T>;
         case "article":
-            return getArticleMessage(id, token, log) as cardInfo<T>;
+            return getArticleMessage(id, token, log) as CardInfo<T>;
         case "user":
-            return getUserMessage(id, token, log) as cardInfo<T>;
+            return getUserMessage(id, token, log) as CardInfo<T>;
         case "live":
-            return getLiveMessage(id, token, undefined, log) as cardInfo<T>;
+            return getLiveMessage(id, token, undefined, log) as CardInfo<T>;
         case "bangumi":
-            return getBangumiMessage(id, token, log) as cardInfo<T>;
+            return getBangumiMessage(id, token, log) as CardInfo<T>;
         case "audio":
-            return getAudioMessage(id, token, log) as cardInfo<T>;
+            return getAudioMessage(id, token, log) as CardInfo<T>;
         case "dynamic":
-            return getDynamicMessage(id, token, log) as cardInfo<T>;
+            return getDynamicMessage(id, token, log) as CardInfo<T>;
         case "favorite":
-            return getFavoriteMessage(id, token, log) as cardInfo<T>;
+            return getFavoriteMessage(id, token, log) as CardInfo<T>;
         case "album":
-            return getAlbumMessage(id, token, log) as cardInfo<T>;
+            return getAlbumMessage(id, token, log) as CardInfo<T>;
         default:
             const code = id?.slice(0, 2).toLowerCase();
             switch (code) {
                 case "cv":
-                    return getArticleMessage(id, token, log) as cardInfo<T>;
+                    return getArticleMessage(id, token, log) as CardInfo<T>;
                 case "md":
-                    return getBangumiMessage(id, token, log) as cardInfo<T>;
+                    return getBangumiMessage(id, token, log) as CardInfo<T>;
                 case "au":
-                    return getAudioMessage(id, token, log) as cardInfo<T>;
+                    return getAudioMessage(id, token, log) as CardInfo<T>;
                 case "bv":
                 case "av":
                 default:
-                    return getVideoMessage(id, token, log) as cardInfo<T>;
+                    return getVideoMessage(id, token, log) as CardInfo<T>;
             }
     }
 }
 
-export async function getMessageAsync<T extends cardType>(type: T, id: string, log: { warn: (data: string) => void; } = console): Promise<cardInfo<T>> {
+export async function getMessageAsync<T extends CardType>(type: T, id: string, log: { warn: (data: string) => void; } = console): Promise<CardInfo<T>> {
     const token = await fetch(getApi(id, type))
         .then(x => x.json())
         .catch(ex => ex.toString());
     switch (type) {
         case "video":
-            return getVideoMessage(id, token, log) as cardInfo<T>;
+            return getVideoMessage(id, token, log) as CardInfo<T>;
         case "article":
-            return getArticleMessage(id, token, log) as cardInfo<T>;
+            return getArticleMessage(id, token, log) as CardInfo<T>;
         case "user":
-            return getUserMessage(id, token, log) as cardInfo<T>;
+            return getUserMessage(id, token, log) as CardInfo<T>;
         case "live":
             return await getLiveMessage(id, token, async (id, log) => {
                 const token = await fetch(getApi(id, "user"))
                     .then(x => x.json())
                     .catch(ex => ex.toString());
                 return getUserMessage(id, token, log);
-            }, log) as cardInfo<T>;
+            }, log) as CardInfo<T>;
         case "bangumi":
-            return getBangumiMessage(id, token, log) as cardInfo<T>;
+            return getBangumiMessage(id, token, log) as CardInfo<T>;
         case "audio":
-            return getAudioMessage(id, token, log) as cardInfo<T>;
+            return getAudioMessage(id, token, log) as CardInfo<T>;
         case "dynamic":
-            return getDynamicMessage(id, token, log) as cardInfo<T>;
+            return getDynamicMessage(id, token, log) as CardInfo<T>;
         case "favorite":
-            return getFavoriteMessage(id, token, log) as cardInfo<T>;
+            return getFavoriteMessage(id, token, log) as CardInfo<T>;
         case "album":
-            return getAlbumMessage(id, token, log) as cardInfo<T>;
+            return getAlbumMessage(id, token, log) as CardInfo<T>;
         default:
             const code = id?.slice(0, 2).toLowerCase();
             switch (code) {
                 case "cv":
-                    return getArticleMessage(id, token, log) as cardInfo<T>;
+                    return getArticleMessage(id, token, log) as CardInfo<T>;
                 case "md":
-                    return getBangumiMessage(id, token, log) as cardInfo<T>;
+                    return getBangumiMessage(id, token, log) as CardInfo<T>;
                 case "au":
-                    return getAudioMessage(id, token, log) as cardInfo<T>;
+                    return getAudioMessage(id, token, log) as CardInfo<T>;
                 case "bv":
                 case "av":
                 default:
-                    return getVideoMessage(id, token, log) as cardInfo<T>;
+                    return getVideoMessage(id, token, log) as CardInfo<T>;
             }
     }
 }

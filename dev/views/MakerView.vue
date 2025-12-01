@@ -90,7 +90,7 @@
             <template #description>
                 设置卡片显示信息的类型。(views, danmakus, comments, favorites, coins, likes)
             </template>
-            <fluent-text-field v-model="infoTypes" :placeholder="getDefaultInfoTypes(type)"></fluent-text-field>
+            <fluent-text-field v-model="InfoTypes" :placeholder="getDefaultInfoTypes(type)"></fluent-text-field>
         </SettingsCard>
         <SettingsCard>
             <template #icon>
@@ -121,7 +121,7 @@
                         <fluent-button v-show="example"
                             @click="(e: MouseEvent) => onCopyClicked(e, example)">复制代码</fluent-button>
                         <fluent-button
-                            @click="() => createExample(json, imageProxy, id, type, infoTypes, theme)">生成卡片</fluent-button>
+                            @click="() => createExample(json, imageProxy, id, type, InfoTypes, theme)">生成卡片</fluent-button>
                     </div>
                 </template>
                 <div v-if="example" style="max-width: 100%;">
@@ -129,7 +129,7 @@
                     <ShadowRoot v-else-if="exampleType === 'html'">
                         <div v-html="example"></div>
                     </ShadowRoot>
-                    <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" />
+                    <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" :get-theme="getTheme" />
                     <HighlightJS language="html" :code="example"
                         style="margin-top: calc(var(--design-unit) * 1px); margin-bottom: 0; border-radius: 6px;" />
                 </div>
@@ -147,11 +147,11 @@ import { useSeoMeta } from "@unhead/vue";
 import { name } from "../../package.json";
 import { neutralFillInputRest, type Combobox } from "@fluentui/web-components";
 import html_beautify from "js-beautify/js/src/html";
-import type { cardType, themeType } from "../../src/types";
+import type { CardType } from "../../src/types";
 import { getApi, getMessage } from "../../src/tools/bilibili-card-message";
 import { createHost, createHostWithTagName, createCardWithTagName } from "../../src/tools/bilibili-card-builder";
-import { getTheme } from "../../src/helpers/theme";
-import type { cardInfo } from "../../src/types";
+import { getTheme } from "../../src/helpers/theme/index";
+import type { CardInfo } from "../../src/types";
 import type { Props } from "../../src/components/bilibili-card.vue";
 import { ShadowRoot } from "vue-shadow-dom";
 import hljs from "@highlightjs/vue-plugin";
@@ -194,7 +194,7 @@ useSeoMeta({
 });
 
 const imageProxy = shallowRef('');
-const infoTypes = shallowRef('');
+const InfoTypes = shallowRef('');
 
 const types = {
     video: "视频",
@@ -209,7 +209,7 @@ const types = {
 };
 
 const id = shallowRef('');
-const type = shallowRef<cardType>("video");
+const type = shallowRef<CardType>("video");
 function getApiUrl() {
     const idValue = id.value;
     if (!idValue) { return null; }
@@ -225,7 +225,7 @@ async function getApiAsync() {
         .catch(ex => ex.toString());
 };
 
-function getTypeIcon(type: cardType) {
+function getTypeIcon(type: CardType) {
     switch (type) {
         case "video":
             return VideoClip20Regular;
@@ -307,33 +307,33 @@ function onCopyClicked(event: MouseEvent, text: string) {
 };
 
 const example = shallowRef('');
-const props = shallowRef({} as Props);
+const props = shallowRef({} as Omit<Props, "getTheme">);
 const output = shallowRef<"components" | "html" | "vue" | "svg">("components");
 const exampleType = shallowRef<typeof output.value>(output.value);
-function createExample(json: string, imageProxy: string, id: string, type: cardType, infoTypes: string, theme: themeType) {
+function createExample(json: string, imageProxy: string, id: string, type: CardType, InfoTypes: string, theme: string) {
     const message = getMessage(type, id, JSON.parse(json), console);
-    example.value = html_beautify(createElement(imageProxy, infoTypes, message, theme) || '');
+    example.value = html_beautify(createElement(imageProxy, InfoTypes, message, theme) || '');
     props.value = {
         imageProxy,
-        infoTypes,
+        InfoTypes,
         theme,
         ...message
     };
     exampleType.value = output.value;
 };
 
-const theme = shallowRef<themeType>('' as themeType);
-function createElement<T extends cardType>(imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: cardInfo<T>, theme: themeType) {
+const theme = shallowRef('');
+function createElement<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
     switch (output.value) {
         case "components":
-            return createHost(imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
+            return createHost(imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
         case "vue":
-            return createHostWithTagName("BiliBiliCard", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
+            return createHostWithTagName("BiliBiliCard", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
         case "html":
-            const card = createCardWithTagName("div", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
+            const card = createCardWithTagName("div", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
             const link = document.createElement("link");
             link.rel = "stylesheet";
-            link.href = getTheme(theme || '0');
+            link.href = getTheme(theme);
             card.insertBefore(link, card.firstChild);
             return card.innerHTML;
     }

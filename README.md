@@ -20,7 +20,7 @@ npm i bilibili-card
 复制以下代码到 HTML 文件中查看
 
 ```html
-<script type="module" src="https://unpkg.com/bilibili-card/dist/components/bilibili-card.js" async></script>
+<script type="module" src="https://unpkg.com/bilibili-card/dist/components/index.js" async></script>
 <bilibili-card vid="BV1y54y1a768" type="video" title="【UWP】手把手教你安装 UWP 安装包" author="where-where"
   cover="http://i2.hdslb.com/bfs/archive/41bc750cb5011bb036e008a716a89158c7eb7bb5.jpg" duration="05:21" views="2.2万"
   danmakus="4" comments="75" favorites="253" coins="106" likes="287" info-types="views danmakus"
@@ -53,7 +53,7 @@ SVG 预览
 在 Head 中引入
 
 ```html
-<script type="module" src="https://unpkg.com/bilibili-card/dist/components/bilibili-card.js" async></script>
+<script type="module" src="https://unpkg.com/bilibili-card/dist/components/index.js" async></script>
 ```
 
 在文章中插入
@@ -80,7 +80,7 @@ SVG 预览
 | likes | 点赞数 | 0 |
 | info-types | 显示信息 | 根据卡片类型分配 |
 | image-proxy | 图片代理地址 | https://images.weserv.nl/?url= |
-| theme | 样式 | system |
+| theme | 样式 | 空 |
 
 ### 使用 Vue 组件
 
@@ -88,10 +88,11 @@ SVG 预览
 
 ```vue
 <template>
-  <BiliBiliCard />
+  <BiliBiliCard :get-theme="getTheme" />
 </template>
 
 <script setup>
+import { getTheme } from "bilibili-card/src/helpers/theme/index";
 import BiliBiliCard from "bilibili-card/src/components/bilibili-card.vue";
 </script>
 ```
@@ -106,7 +107,7 @@ import BiliBiliCard from "bilibili-card/src/components/bilibili-card.vue";
 <link rel="stylesheet" href="https://unpkg.com/bilibili-card/src/styles/bilibili-card.css">
 <div id="host"></div>
 <script type="module">
-  import { bilibiliCardBuilder } from "https://unpkg.com/bilibili-card/dist/tools/bilibili-card-builder.js";
+  import { bilibiliCardBuilder } from "https://unpkg.com/bilibili-card/dist/tools/bilibili-card-builder/index.js";
   const card = bilibiliCardBuilder.createCard(
     undefined,
     "views danmakus",
@@ -134,7 +135,7 @@ import BiliBiliCard from "bilibili-card/src/components/bilibili-card.vue";
 
 在 `vite.config` 中引入
 ```js
-import bilibiliCard from "bilibili-card/dist/lib/bilibili-card.js";
+import bilibiliCard from "bilibili-card/dist/lib/bilibili-card";
 
 export default defineConfig({
   plugins: [

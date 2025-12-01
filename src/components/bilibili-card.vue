@@ -1,6 +1,6 @@
 <template>
     <ShadowRoot>
-        <link v-if="themeUrl" :href="themeUrl" rel="stylesheet" />
+        <link v-if="themeLink" :href="themeLink" rel="stylesheet" />
         <div class="video-holder">
             <a class="default-flex full-width" target="_blank" rel="noopener noreferrer" :href="url"
                 style="max-height: 92px; display: flex; align-items: center;">
@@ -51,14 +51,13 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { getBackgroundUrl } from "../helpers/url";
-import { getTheme } from "../helpers/theme";
-import { defaultTitle, defaultAuthor, defaultDuration, defaultProxy, defaultTheme, canPlay, hasDuration, getIcon, getTypeName, getUrl, getDefaultInfoTypes } from "../helpers/builder";
-import type { themeType, infoType, cardType } from "../types";
+import { defaultTitle, defaultAuthor, defaultDuration, defaultProxy, canPlay, hasDuration, getIcon, getTypeName, getUrl, getDefaultInfoTypes } from "../helpers/builder";
+import type { InfoType, CardType } from "../types";
 import { ShadowRoot } from "vue-shadow-dom";
 
 export interface Props {
     vid: string;
-    type?: cardType;
+    type?: CardType;
     title?: string;
     author?: string;
     cover?: string;
@@ -69,26 +68,28 @@ export interface Props {
     favorites?: string | number;
     coins?: string | number;
     likes?: string | number;
-    infoTypes?: string | infoType[];
+    InfoTypes?: string | InfoType[];
     imageProxy?: string;
-    theme?: themeType;
+    theme?: string;
+    getTheme?: (theme?: string | null) => string;
 }
 
-const { vid, type = "video", title, author, cover, duration, infoTypes, imageProxy, theme, ...props } = defineProps<Props>();
+const { vid, type = "video", title, author, cover, duration, InfoTypes, imageProxy, theme, getTheme = x => x, ...props } = defineProps<Props>();
 const name = computed(() => getTypeName(type));
 const url = computed(() => getUrl(vid, type));
+const themeLink = computed(() => getTheme(theme));
 const backgroundImage = computed(() => cover ? `url(${getBackgroundUrl(imageProxy || defaultProxy, cover)})` : '');
 const hasDurationFlag = computed(() => hasDuration(type));
 
-function getInfoTypes(infoTypes: string | infoType[] | undefined, type: cardType) {
-    if (!infoTypes) {
+function getInfoTypes(InfoTypes: string | InfoType[] | undefined, type: CardType) {
+    if (!InfoTypes) {
         return getDefaultInfoTypes(type);
     }
-    else if (infoTypes instanceof Array) {
-        return infoTypes as infoType[];
+    else if (InfoTypes instanceof Array) {
+        return InfoTypes as InfoType[];
     }
-    else if (typeof infoTypes === "string") {
-        return infoTypes.split(/[,|\s+]/).filter(x => x != '') as infoType[];
+    else if (typeof InfoTypes === "string") {
+        return InfoTypes.split(/[,|\s+]/).filter(x => x != '') as InfoType[];
     }
     else {
         return [];
@@ -96,13 +97,12 @@ function getInfoTypes(infoTypes: string | infoType[] | undefined, type: cardType
 }
 
 const infos = computed(() => {
-    return getInfoTypes(infoTypes, type).map(infoType => {
+    return getInfoTypes(InfoTypes, type).map(InfoType => {
         return {
-            type: infoType,
-            icon: getIcon(infoType, canPlay(type)),
-            text: props[infoType] || '0'
+            type: InfoType,
+            icon: getIcon(InfoType, canPlay(type)),
+            text: props[InfoType] || '0'
         };
     });
 });
-const themeUrl = computed(() => getTheme(theme || defaultTheme));
 </script>

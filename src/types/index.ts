@@ -1,7 +1,6 @@
-export type cardType = "video" | "article" | "user" | "live" | "bangumi" | "audio" | "dynamic" | "favorite" | "album";
-export type infoType = "views" | "danmakus" | "comments" | "favorites" | "coins" | "likes";
-export type themeType = "system" | "light" | "dark";
-export type cardInfo<T extends cardType = cardType> = { vid: string; type: T; title: string; author?: string; cover?: string; duration?: string; views?: string; danmakus?: string; comments?: string; favorites?: string; coins?: string; likes?: string; };
+export type CardType = "video" | "article" | "user" | "live" | "bangumi" | "audio" | "dynamic" | "favorite" | "album";
+export type InfoType = "views" | "danmakus" | "comments" | "favorites" | "coins" | "likes";
+export type CardInfo<T extends CardType = CardType> = { vid: string; type: T; title: string; author?: string; cover?: string; duration?: string; views?: string; danmakus?: string; comments?: string; favorites?: string; coins?: string; likes?: string; };
 
 export declare interface IBiliBiliCardInfo {
     get views(): string;
@@ -26,7 +25,7 @@ export declare interface IBiliBiliCard extends IBiliBiliCardInfo {
     get vid(): string | null;
     set vid(value: string);
 
-    get type(): cardType;
+    get type(): CardType;
     set type(value);
 
     get title(): string;
@@ -59,8 +58,8 @@ export declare interface IBiliBiliCard extends IBiliBiliCardInfo {
     get likes(): string;
     set likes(value);
 
-    get infoTypes(): infoType[];
-    set infoTypes(value: infoType[]);
+    get InfoTypes(): InfoType[];
+    set InfoTypes(value: InfoType[]);
 
     get imageProxy(): string;
     set imageProxy(value: string);
@@ -70,5 +69,5 @@ export declare interface IBiliBiliCard extends IBiliBiliCardInfo {
 
     connectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
-    getInfo(name: infoType): string | null;
+    getInfo(name: InfoType): string | null;
 }

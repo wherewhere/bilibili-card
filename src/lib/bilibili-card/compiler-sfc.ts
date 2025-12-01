@@ -1,7 +1,7 @@
-import { parse, compileScript } from "vue/compiler-sfc";
 import type { SourceDescription } from "rollup";
 
-export function compileSFC(source: string, filename: string): SourceDescription {
+export async function compileSFCAsync(source: string, filename: string): Promise<SourceDescription> {
+    const { parse, compileScript } = await import("@vue/compiler-sfc");
     const { descriptor } = parse(source, { filename });
     const script = compileScript(descriptor, {
         id: JSON.stringify(filename),

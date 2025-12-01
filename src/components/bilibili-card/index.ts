@@ -1,28 +1,28 @@
 import type {
-    cardType,
-    infoType,
-    themeType,
+    CardType,
+    InfoType,
     IBiliBiliCard
-} from "../types";
+} from "../../types";
 
-import "../helpers/polyfill";
+import "../../helpers/polyfill";
 
 import {
+    window,
+    document,
     getDefaultInfoTypes,
     defaultTitle,
     defaultAuthor,
     defaultDuration,
-    defaultTheme,
     defaultProxy,
     initCard,
     connectedCallback,
     attributeChangedCallback,
     getInfo
-} from "../helpers/builder";
+} from "../../helpers/builder";
 
-import { getTheme } from "../helpers/theme";
+import defaultTheme from "../../styles/bilibili-card.css?url";
 
-export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
+export default class BiliBiliCard extends window.HTMLElement implements IBiliBiliCard {
     declare isLoaded: boolean;
     declare contents: {
         link: HTMLAnchorElement;
@@ -34,6 +34,10 @@ export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
         author: HTMLSpanElement;
         theme: HTMLLinkElement;
     };
+
+    static getTheme = (theme?: string | null) => {
+        return theme || defaultTheme;
+    }
 
     static get observedAttributes() {
         return ["vid", "type", "title", "author", "cover", "duration", "views", "danmakus", "comments", "favorites", "coins", "likes", "info-types", "image-proxy", "theme"];
@@ -61,8 +65,8 @@ export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
         this.setAttribute("vid", value);
     }
 
-    get type(): cardType {
-        return this.getAttribute("type") as cardType || "video";
+    get type(): CardType {
+        return this.getAttribute("type") as CardType || "video";
     }
     set type(value) {
         this.setAttribute("type", value);
@@ -141,17 +145,17 @@ export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
         this.setAttribute("likes", value);
     }
 
-    get infoTypes() {
+    get InfoTypes() {
         const value = this.getAttribute("info-types");
         if (value && typeof value === "string") {
             const types = value.split(/[,|\s+]/).filter(x => x != '');
             if (types.length) {
-                return types as infoType[];
+                return types as InfoType[];
             }
         }
         return getDefaultInfoTypes(this.type);
     }
-    set infoTypes(value) {
+    set InfoTypes(value) {
         this.setAttribute("info-types", Array.isArray(value) ? value.join(' ') : value);
     }
 
@@ -163,14 +167,14 @@ export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
     }
 
     get theme() {
-        return this.getAttribute("theme") as themeType || defaultTheme;
+        return BiliBiliCard.getTheme(this.getAttribute("theme"));
     }
     set theme(value) {
         this.setAttribute("theme", value);
     }
 
     connectedCallback() {
-        this.contents.theme.href = getTheme(this.theme);
+        this.contents.theme.href = this.theme;
         connectedCallback.apply(this);
         this.isLoaded = true;
     }
@@ -178,16 +182,14 @@ export default class BiliBiliCard extends HTMLElement implements IBiliBiliCard {
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         if (!this.isLoaded || oldValue === newValue) { return; }
         if (name === "theme") {
-            this.contents.theme.href = getTheme(newValue as themeType || defaultTheme);
+            this.contents.theme.href = BiliBiliCard.getTheme(newValue);
         }
         else {
             attributeChangedCallback.apply(this, [name, newValue]);
         }
     }
 
-    getInfo(name: infoType) {
+    getInfo(name: InfoType) {
         return getInfo.apply(this, [name]);
     }
 }
-
-customElements.define("bilibili-card", BiliBiliCard);

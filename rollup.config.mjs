@@ -72,27 +72,15 @@ const dtsPlugin = [dtsConfig, postcssConfig];
 /** @type {import("rollup").RollupOptions[]} */
 export default [{
     external: ["@vue/compiler-sfc", "jsdom"],
-    input: "src/index.ts",
+    input: ["src/index.ts", "src/components/index.ts"],
     output: {
         format: "es",
         sourcemap: true,
         dir: "dist",
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
-        manualChunks: {
-            "helpers": ["src/helpers/builder", "src/helpers/polyfill", "src/helpers/url"],
-            "components/bilibili-card": ["src/components/bilibili-card"],
-            "components/bilibili-card.css": ["src/components/bilibili-card.css"],
-            "components/bilibili-card.dark.css": ["src/components/bilibili-card.dark.css"],
-            "components/bilibili-card.fluent.css": ["src/components/bilibili-card.fluent.css"],
-            "components/bilibili-card.light.css": ["src/components/bilibili-card.light.css"],
-            "components/bilibili-card.windose.css": ["src/components/bilibili-card.windose.css"],
-            "lib/create-card": ["src/lib/create-card"],
-            "lib/bilibili-card": ["src/lib/bilibili-card"],
-            "tools/bilibili-card-builder": ["src/tools/bilibili-card-builder"],
-            "tools/bilibili-card-message": ["src/tools/bilibili-card-message"]
-        },
-        minifyInternalExports: false
+        preserveModules: true,
+        preserveModulesRoot: "src"
     },
     plugins: esPlugin
 }, {
@@ -102,9 +90,8 @@ export default [{
         dir: "dist",
         entryFileNames: "[name].d.ts",
         chunkFileNames: "[name].d.ts",
-        manualChunks: {
-            "components/bilibili-card": ["src/components/bilibili-card"],
-        }
+        preserveModules: true,
+        preserveModulesRoot: "src"
     },
     plugins: dtsPlugin
 }];

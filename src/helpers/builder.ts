@@ -1,12 +1,14 @@
+/// <reference types="../lib/import-url.d.ts" />
 import type {
-    cardType,
-    infoType,
+    CardType,
+    InfoType,
     IBiliBiliCardInfo,
     IBiliBiliCard
 } from "../types";
 
-import initDOMAsync from "./node";
-export const { window, document } = await initDOMAsync();
+import { initDOMAsync, type IWindow } from "./node";
+export const window: IWindow = await initDOMAsync();
+export const document = window.document;
 
 function getVid(id: string) {
     const type = id.slice(0, 2).toUpperCase();
@@ -24,15 +26,15 @@ function getVid(id: string) {
     }
 }
 
-export function canPlay<T extends cardType>(type: T): T extends "video" | "live" | "bangumi" | "audio" ? true : false {
+export function canPlay<T extends CardType>(type: T): T extends "video" | "live" | "bangumi" | "audio" ? true : false {
     return (type === "video" || type === "live" || type === "bangumi" || type === "audio") as any;
 }
 
-export function hasDuration<T extends cardType>(type: T): T extends "video" | "audio" ? true : false {
+export function hasDuration<T extends CardType>(type: T): T extends "video" | "audio" ? true : false {
     return (type === "video" || type === "audio") as any;
 }
 
-export function getIcon(type: infoType | "time", isVideo = true) {
+export function getIcon(type: InfoType | "time", isVideo = true) {
     switch (type) {
         case "views":
             return isVideo
@@ -82,7 +84,7 @@ export function getIcon(type: infoType | "time", isVideo = true) {
     }
 }
 
-function createInfoItem(type: infoType, text?: string | null, isVideo = true) {
+function createInfoItem(type: InfoType, text?: string | null, isVideo = true) {
     const icon = getIcon(type, isVideo);
     if (typeof icon !== "object") { return; }
     const item = document.createElement("div");
@@ -99,7 +101,7 @@ function createInfoItem(type: infoType, text?: string | null, isVideo = true) {
     return item;
 }
 
-function addInfoItem(info: Element, type: infoType, text?: string | null, isVideo = true) {
+function addInfoItem(info: Element, type: InfoType, text?: string | null, isVideo = true) {
     if (!info) { return; }
     let item: Element | null | undefined = info.querySelector(`.cover-info-item.${type}`);
     if (item) {
@@ -113,14 +115,14 @@ function addInfoItem(info: Element, type: infoType, text?: string | null, isVide
     }
 }
 
-function addInfoItems(info: Element, types?: infoType[] | null, card?: IBiliBiliCard) {
+function addInfoItems(info: Element, types?: InfoType[] | null, card?: IBiliBiliCard) {
     if (!Array.isArray(types)) { return; }
     if (typeof card !== "object") { return; }
     const isVideo = canPlay(card.type);
     types.forEach(type => addInfoItem(info, type, card.getInfo(type), isVideo));
 }
 
-function setCoverType(cover: Element | null, type: cardType) {
+function setCoverType(cover: Element | null, type: CardType) {
     if (!cover) { return; }
     if (canPlay(type)) {
         cover.classList.add("video-cover-img");
@@ -168,7 +170,7 @@ export function getTypeName<T extends keyof typeNameMap & string>(type: T): type
     }
 }
 
-export function getUrl(id: string | null, type: cardType) {
+export function getUrl(id: string | null, type: CardType) {
     if (typeof id !== "string" || !id.length) { return; }
     switch (type) {
         case "video":
@@ -194,7 +196,7 @@ export function getUrl(id: string | null, type: cardType) {
     }
 }
 
-export function getDefaultInfoTypes(value: cardType): infoType[] {
+export function getDefaultInfoTypes(value: CardType): InfoType[] {
     switch (value) {
         case "video":
             return ["views", "danmakus"];
@@ -220,7 +222,6 @@ import { getBackgroundUrl, defaultProxy } from "./url";
 export const defaultTitle = "哔哩哔哩 (゜-゜)つロ 干杯~";
 export const defaultAuthor = "2233";
 export const defaultDuration = "??:??";
-export const defaultTheme = "system";
 export { defaultProxy };
 
 export function initCard(this: IBiliBiliCard, shadowRoot: ShadowRoot | Element) {
@@ -325,7 +326,7 @@ export function connectedCallback(this: IBiliBiliCard) {
     duration.textContent = this.duration;
     duration.parentElement!.style.display = hasDuration(type) ? '' : "none";
     this.contents.title.textContent = this.title;
-    addInfoItems(this.contents.info, this.infoTypes, this);
+    addInfoItems(this.contents.info, this.InfoTypes, this);
     this.contents.type.textContent = getTypeName(type);
     this.contents.author.textContent = this.author;
 }
@@ -336,7 +337,7 @@ export function attributeChangedCallback(this: IBiliBiliCard, name: string, newV
             this.contents.link.href = getUrl(newValue, this.type)!;
             break;
         case "type":
-            const type = newValue as cardType || "video";
+            const type = newValue as CardType || "video";
             this.contents.link.href = getUrl(this.vid, type)!;
             setCoverType(this.contents.cover, type);
             this.contents.duration.parentElement!.style.display = hasDuration(type) ? '' : "none";
@@ -363,39 +364,39 @@ export function attributeChangedCallback(this: IBiliBiliCard, name: string, newV
             this.contents.duration.textContent = newValue || defaultDuration;
             break;
         case "views":
-            if (this.infoTypes.includes("views")) {
+            if (this.InfoTypes.includes("views")) {
                 addInfoItem(this.contents.info, "views", newValue || '0', canPlay(this.type));
             }
             break;
         case "danmakus":
-            if (this.infoTypes.includes("danmakus")) {
+            if (this.InfoTypes.includes("danmakus")) {
                 addInfoItem(this.contents.info, "danmakus", newValue || '0');
             }
             break;
         case "comments":
-            if (this.infoTypes.includes("comments")) {
+            if (this.InfoTypes.includes("comments")) {
                 addInfoItem(this.contents.info, "comments", newValue || '0');
             }
             break;
         case "favorites":
-            if (this.infoTypes.includes("favorites")) {
+            if (this.InfoTypes.includes("favorites")) {
                 addInfoItem(this.contents.info, "favorites", newValue || '0');
             }
             break;
         case "coins":
-            if (this.infoTypes.includes("coins")) {
+            if (this.InfoTypes.includes("coins")) {
                 addInfoItem(this.contents.info, "coins", newValue || '0');
             }
             break;
         case "likes":
-            if (this.infoTypes.includes("likes")) {
+            if (this.InfoTypes.includes("likes")) {
                 addInfoItem(this.contents.info, "likes", newValue || '0');
             }
             break;
         case "info-types":
             const info = this.contents.info;
             info.innerHTML = '';
-            let types = typeof newValue === "string" ? newValue.split(/[,|\s+]/).filter(x => x != '') as infoType[] : [];
+            let types = typeof newValue === "string" ? newValue.split(/[,|\s+]/).filter(x => x != '') as InfoType[] : [];
             if (!types.length) {
                 types = getDefaultInfoTypes(this.type);
             }
@@ -412,7 +413,7 @@ export function attributeChangedCallback(this: IBiliBiliCard, name: string, newV
     }
 }
 
-export function getInfo(this: IBiliBiliCard, name: infoType) {
+export function getInfo(this: IBiliBiliCard, name: InfoType) {
     let info: string | null = (this as IBiliBiliCardInfo)[name];
     if (typeof info === "undefined") {
         info = this.getAttribute(name);
