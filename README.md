@@ -204,6 +204,7 @@ import BiliBiliCard from "bilibili-card:BV1y54y1a768?type=video&info-types=views
 
 ## 引用及参考
 - [jsdom](https://github.com/jsdom/jsdom "jsdom")
+- [vue-shadow-dom](https://github.com/2A5F/shadow "shadow")
 - [hexo-bilibili-card](https://github.com/MaxChang3/hexo-bilibili-card "hexo-bilibili-card")
 - [哔哩哔哩-API收集整理](https://github.com/SocialSisterYi/bilibili-API-collect "BiliBili API Collect")
 

@@ -9,7 +9,6 @@
     --bilibili-card-subtitle-color: white;
     --bilibili-card-subtitle-background-color: rgba(0, 0, 0, .4);
     --bilibili-card-content-color: #999;
-    color-scheme: light;
 }
 
 :host,

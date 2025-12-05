@@ -1,10 +1,11 @@
 {
   "name": "bilibili-card",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A web components insert a bilibili video card into your page or article, some of css code is copy from bilibili.",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "unpkg": "dist/index.browser.js",
   "scripts": {
     "dev": "vite ./dev",
     "build": "rollup -c",

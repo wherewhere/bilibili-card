@@ -7,8 +7,6 @@ import type {
 import "../../helpers/polyfill";
 
 import {
-    window,
-    document,
     getDefaultInfoTypes,
     defaultTitle,
     defaultAuthor,
@@ -21,8 +19,9 @@ import {
 } from "../../helpers/builder";
 
 import defaultTheme from "../../styles/bilibili-card.css?url";
+import { dom } from "../../helpers/dom";
 
-export default class BiliBiliCard extends window.HTMLElement implements IBiliBiliCard {
+export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCard {
     declare isLoaded: boolean;
     declare contents: {
         link: HTMLAnchorElement;
@@ -49,11 +48,11 @@ export default class BiliBiliCard extends window.HTMLElement implements IBiliBil
         this.isLoaded = false;
         const shadowRoot = this.attachShadow({ mode: "open" });
 
-        const theme = document.createElement("link");
+        const theme = dom.document.createElement("link");
         theme.rel = "stylesheet";
         shadowRoot.appendChild(theme);
 
-        initCard.apply(this, [shadowRoot]);
+        initCard.call(this, shadowRoot);
 
         this.contents.theme = theme;
     }
@@ -175,7 +174,7 @@ export default class BiliBiliCard extends window.HTMLElement implements IBiliBil
 
     connectedCallback() {
         this.contents.theme.href = this.theme;
-        connectedCallback.apply(this);
+        connectedCallback.call(this);
         this.isLoaded = true;
     }
 
@@ -185,11 +184,11 @@ export default class BiliBiliCard extends window.HTMLElement implements IBiliBil
             this.contents.theme.href = BiliBiliCard.getTheme(newValue);
         }
         else {
-            attributeChangedCallback.apply(this, [name, newValue]);
+            attributeChangedCallback.call(this, name, newValue);
         }
     }
 
     getInfo(name: InfoType) {
-        return getInfo.apply(this, [name]);
+        return getInfo.call(this, name);
     }
 }

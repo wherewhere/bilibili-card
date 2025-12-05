@@ -6,9 +6,7 @@ import type {
     IBiliBiliCard
 } from "../types";
 
-import { initDOMAsync, type IWindow } from "./node";
-export const window: IWindow = await initDOMAsync();
-export const document = window.document;
+import { dom } from "./dom";
 
 function getVid(id: string) {
     const type = id.slice(0, 2).toUpperCase();
@@ -87,7 +85,7 @@ export function getIcon(type: InfoType | "time", isVideo = true) {
 function createInfoItem(type: InfoType, text?: string | null, isVideo = true) {
     const icon = getIcon(type, isVideo);
     if (typeof icon !== "object") { return; }
-    const item = document.createElement("div");
+    const item = dom.document.createElement("div");
     item.className = `cover-info-item ${type}`;
     item.innerHTML =
         `<i class="iconfont">
@@ -225,11 +223,11 @@ export const defaultDuration = "??:??";
 export { defaultProxy };
 
 export function initCard(this: IBiliBiliCard, shadowRoot: ShadowRoot | Element) {
-    const card = document.createElement("div");
+    const card = dom.document.createElement("div");
     card.className = "video-holder";
     shadowRoot.appendChild(card);
 
-    const link = document.createElement('a');
+    const link = dom.document.createElement('a');
     link.className = "default-flex full-width";
     link.target = "_blank";
     link.rel = "noopener noreferrer";
@@ -238,7 +236,7 @@ export function initCard(this: IBiliBiliCard, shadowRoot: ShadowRoot | Element) 
     link.style.alignItems = "center";
     card.appendChild(link);
 
-    const cover_box = document.createElement("div");
+    const cover_box = dom.document.createElement("div");
     cover_box.className = "disable-event cover-box";
     cover_box.style.float = "left";
     cover_box.innerHTML =
@@ -250,43 +248,43 @@ export function initCard(this: IBiliBiliCard, shadowRoot: ShadowRoot | Element) 
         </i>`;
     link.appendChild(cover_box);
 
-    const cover = document.createElement("div");
+    const cover = dom.document.createElement("div");
     cover.className = "cover-img";
     cover.style.display = "none";
     cover_box.appendChild(cover);
 
-    const video_subtitle = document.createElement("div");
+    const video_subtitle = dom.document.createElement("div");
     video_subtitle.className = "video-subtitle";
     cover_box.appendChild(video_subtitle);
 
-    const duration = document.createElement("div");
+    const duration = dom.document.createElement("div");
     duration.className = "video-duration";
     video_subtitle.appendChild(duration);
 
-    const content = document.createElement("div");
+    const content = dom.document.createElement("div");
     content.className = "disable-event video-content-container";
     link.appendChild(content);
 
-    const title = document.createElement('p');
+    const title = dom.document.createElement('p');
     title.className = "double-ellipsis video-title";
     title.style.marginBottom = '0';
     content.appendChild(title);
 
-    const info = document.createElement("div");
+    const info = dom.document.createElement("div");
     info.className = "video-card-info";
     info.style.display = "flex";
     content.appendChild(info);
 
-    const bottom = document.createElement("div");
+    const bottom = dom.document.createElement("div");
     bottom.className = "video-card-bottom";
     bottom.style.display = "flex";
     content.appendChild(bottom);
 
-    const type = document.createElement("label");
+    const type = dom.document.createElement("label");
     type.className = "card-text-label";
     bottom.appendChild(type);
 
-    const author_box = document.createElement("div");
+    const author_box = dom.document.createElement("div");
     author_box.className = "view-flex default-flex align-center author-info";
     author_box.innerHTML =
         `<i class="iconfont up-icon">
@@ -298,7 +296,7 @@ export function initCard(this: IBiliBiliCard, shadowRoot: ShadowRoot | Element) 
     author_box.style.display = "flex";
     bottom.appendChild(author_box);
 
-    const author = document.createElement("span");
+    const author = dom.document.createElement("span");
     author.className = "view-flex single-ellipsis author-name";
     author_box.appendChild(author);
 

@@ -7,11 +7,14 @@
     --bilibili-card-border-color: var(--neutral-stroke-layer-rest);
     --bilibili-card-border-color-hover: var(--neutral-stroke-layer-hover);
     --bilibili-card-border-color-active: var(--neutral-stroke-layer-active);
-    --bilibili-card-border-color-focus: var(--neutral-stroke-layer-focus);
     --bilibili-card-background-color: var(--neutral-fill-rest);
     --bilibili-card-background-color-hover: var(--neutral-fill-hover);
     --bilibili-card-background-color-active: var(--neutral-fill-active);
     --bilibili-card-background-color-focus: var(--neutral-fill-focus);
+    --bilibili-card-shadow-color: var(--elevation-shadow-card-rest);
+    --bilibili-card-shadow-color-hover: var(--elevation-shadow-card-hover);
+    --bilibili-card-shadow-color-active: var(--elevation-shadow-card-active);
+    --bilibili-card-shadow-color-focus: var(--elevation-shadow-card-focus);
     --bilibili-card-cover-color: var(--neutral-fill-stealth-rest);
     --bilibili-card-cover-background-color: var(--neutral-fill-secondary-rest);
     --bilibili-card-title-color: var(--neutral-foreground-rest);
@@ -98,15 +101,19 @@
     border-radius: 6px;
     overflow: hidden;
     box-sizing: border-box;
-    box-shadow: var(--elevation-shadow-card-rest);
+    box-shadow: var(--bilibili-card-shadow-color);
 }
 
 .video-holder:hover {
-    box-shadow: var(--elevation-shadow-card-hover);
+    box-shadow: var(--bilibili-card-shadow-color-hover);
 }
 
 .video-holder:active {
-    box-shadow: var(--elevation-shadow-card-pressed);
+    box-shadow: var(--bilibili-card-shadow-color-active);
+}
+
+.video-holder:focus {
+    box-shadow: var(--bilibili-card-shadow-color-focus);
 }
 
 .video-holder a {
@@ -250,7 +257,7 @@
     color: var(--bilibili-card-content-color-focus);
     fill: var(--bilibili-card-content-color-focus);
     background: var(--bilibili-card-background-color-focus);
-    border: 1px solid var(--bilibili-card-border-color-focus);
+    border: 1px solid var(--bilibili-card-border-color-hover);
 }
 
 .video-holder .video-title {

@@ -185,17 +185,15 @@ body,
 </style>
 
 <style lang="scss" scoped>
-:deep(fluent-tooltip.title-tooltip)::part(tooltip),
-:deep(fluent-tooltip.title-tooltip) .tooltip {
-    padding: 0;
-}
-
-:deep(fluent-tooltip.title-tooltip)::part(tooltip)::after,
-:deep(fluent-tooltip.title-tooltip) .tooltip::after {
-    display: none;
-}
-
 :deep(fluent-tooltip.title-tooltip) {
+    &::part(tooltip) {
+        padding: 0;
+
+        &::after {
+            display: none;
+        }
+    }
+
     .video-holder {
         border-radius: calc(var(--control-corner-radius) * 1px);
 

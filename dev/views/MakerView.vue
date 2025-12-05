@@ -341,10 +341,14 @@ function createElement<T extends CardType>(imageProxy: string, InfoTypes: string
 </script>
 
 <style lang="scss" scoped>
+@font-face {
+    font-family: "DinkieBitmap 9px";
+    src: local("DinkieBitmap 9px"), local("丁卯点阵体 9px"),
+        url("https://cdn.jsdelivr.net/gh/haldai/org-slides@master/style/fonts/DinkieBitmap-9px.woff2") format("woff2");
+}
+
 :deep(fluent-select)::part(listbox),
-:deep(fluent-select) .listbox,
-:deep(fluent-combobox)::part(listbox),
-:deep(fluent-combobox) .listbox {
+:deep(fluent-combobox)::part(listbox) {
     max-height: calc(var(--base-height-multiplier) * 30px);
 }
 

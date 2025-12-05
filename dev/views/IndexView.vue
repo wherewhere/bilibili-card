@@ -29,6 +29,12 @@ const example = shallowRef(
 </script>
 
 <style lang="scss" scoped>
+@font-face {
+    font-family: "DinkieBitmap 9px";
+    src: local("DinkieBitmap 9px"), local("丁卯点阵体 9px"),
+        url("https://cdn.jsdelivr.net/gh/haldai/org-slides@master/style/fonts/DinkieBitmap-9px.woff2") format("woff2");
+}
+
 :deep(img) {
     max-width: 100%;
 }

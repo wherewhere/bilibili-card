@@ -12,4 +12,4 @@ export function getBackgroundUrl(proxy: string, url: string) {
     }
 }
 
-export const defaultProxy = typeof _wb_wombat === "undefined" ? "https://images.weserv.nl/?url=" : '';
+export const defaultProxy = "https://images.weserv.nl/?url=";

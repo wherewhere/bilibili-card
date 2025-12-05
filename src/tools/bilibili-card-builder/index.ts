@@ -8,8 +8,6 @@ import type {
 import "../../helpers/polyfill";
 
 import {
-    window,
-    document,
     getDefaultInfoTypes,
     defaultTitle,
     defaultAuthor,
@@ -20,61 +18,6 @@ import {
     attributeChangedCallback,
     getInfo
 } from "../../helpers/builder";
-export { window };
-
-export function createHost<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
-    return createHostWithTagName("bilibili-card", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
-}
-
-export function createHostWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string): K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : HTMLElement {
-    const bilibiliCard = document.createElement(tagName);
-    if (vid) {
-        bilibiliCard.setAttribute("vid", vid);
-    }
-    if (type) {
-        bilibiliCard.setAttribute("type", type);
-    }
-    if (title) {
-        bilibiliCard.setAttribute("title", title);
-    }
-    if (author) {
-        bilibiliCard.setAttribute("author", author);
-    }
-    if (cover) {
-        bilibiliCard.setAttribute("cover", cover);
-    }
-    if (duration) {
-        bilibiliCard.setAttribute("duration", duration);
-    }
-    if (views) {
-        bilibiliCard.setAttribute("views", views);
-    }
-    if (danmakus) {
-        bilibiliCard.setAttribute("danmakus", danmakus);
-    }
-    if (comments) {
-        bilibiliCard.setAttribute("comments", comments);
-    }
-    if (favorites) {
-        bilibiliCard.setAttribute("favorites", favorites);
-    }
-    if (coins) {
-        bilibiliCard.setAttribute("coins", coins);
-    }
-    if (likes) {
-        bilibiliCard.setAttribute("likes", likes);
-    }
-    if (InfoTypes) {
-        bilibiliCard.setAttribute("info-types", InfoTypes);
-    }
-    if (imageProxy) {
-        bilibiliCard.setAttribute("image-proxy", imageProxy);
-    }
-    if (theme) {
-        bilibiliCard.setAttribute("theme", theme);
-    }
-    return bilibiliCard as any;
-}
 
 declare interface BiliBiliCard<T extends Element = Element> extends IBiliBiliCard {
     host: T;
@@ -227,6 +170,63 @@ function initHost<T extends Element = Element>(host: T) {
 
 function attachHost<T extends Element = Element>(host: BiliBiliCardElement<T>) {
     host.bilibiliCard.connectedCallback();
+}
+
+export function createHost<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
+    return createHostWithTagName("bilibili-card", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
+}
+
+import { dom } from "../../helpers/dom";
+export { dom as window };
+
+export function createHostWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string): K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : HTMLElement {
+    const bilibiliCard = dom.document.createElement(tagName);
+    if (vid) {
+        bilibiliCard.setAttribute("vid", vid);
+    }
+    if (type) {
+        bilibiliCard.setAttribute("type", type);
+    }
+    if (title) {
+        bilibiliCard.setAttribute("title", title);
+    }
+    if (author) {
+        bilibiliCard.setAttribute("author", author);
+    }
+    if (cover) {
+        bilibiliCard.setAttribute("cover", cover);
+    }
+    if (duration) {
+        bilibiliCard.setAttribute("duration", duration);
+    }
+    if (views) {
+        bilibiliCard.setAttribute("views", views);
+    }
+    if (danmakus) {
+        bilibiliCard.setAttribute("danmakus", danmakus);
+    }
+    if (comments) {
+        bilibiliCard.setAttribute("comments", comments);
+    }
+    if (favorites) {
+        bilibiliCard.setAttribute("favorites", favorites);
+    }
+    if (coins) {
+        bilibiliCard.setAttribute("coins", coins);
+    }
+    if (likes) {
+        bilibiliCard.setAttribute("likes", likes);
+    }
+    if (InfoTypes) {
+        bilibiliCard.setAttribute("info-types", InfoTypes);
+    }
+    if (imageProxy) {
+        bilibiliCard.setAttribute("image-proxy", imageProxy);
+    }
+    if (theme) {
+        bilibiliCard.setAttribute("theme", theme);
+    }
+    return bilibiliCard as any;
 }
 
 export function createCard<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string) {
