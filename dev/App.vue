@@ -54,7 +54,11 @@
             </RouterLink>
         </div>
         <div class="content">
-            <RouterView />
+            <RouterView v-slot="{ Component }">
+                <Transition name="drill" mode="out-in">
+                    <component :is="Component" />
+                </Transition>
+            </RouterView>
         </div>
         <footer class="footer">
             <span>Copyright © 2017 - {{ year }} {{ author }}. All Rights Reserved</span>
@@ -70,13 +74,14 @@ import "./types";
 import { computed, shallowRef, watch } from "vue";
 import { useSeoMeta } from "@unhead/vue";
 import { useRoute } from "vue-router";
+import { useAnalytics } from "./helpers/analytics";
 import { name, keywords } from "../package.json";
 import theme from "../src/styles/bilibili-card.fluent.css?url";
 import year from "javascript:new Date().getFullYear()";
 import BiliBiliCard from "bilibili-card:BV1HJu1zzEH3";
 
 const author = "wherewhere";
-const description = "一个 Web 组件，在你的文章中插入哔哩哔哩卡片，样式模仿和借鉴自哔哩哔哩"
+const description = "一个 Web 组件，在你的文章中插入哔哩哔哩卡片，样式模仿和借鉴自哔哩哔哩";
 useSeoMeta({
     // Basic SEO
     title: name,
@@ -99,8 +104,22 @@ useSeoMeta({
     articleAuthor: [author],
     articleTag: keywords
 });
+useAnalytics();
 
 const route = useRoute();
+watch(
+    () => route.path,
+    (newValue, oldValue) => {
+        if (newValue !== oldValue) {
+            window.gtag?.call(this, "event", "page_view", {
+                page_location: location.href,
+                page_path: newValue,
+                page_title: `${route.name?.toString()} | ${name}`
+            });
+            window._hmt?.push(["_trackPageview", newValue]);
+        }
+    }
+);
 
 const colorScheme = shallowRef<'' | 'light' | 'dark'>('');
 const colorSchemeTitle = computed(() => {
@@ -147,6 +166,8 @@ function switchColorScheme() {
     @include meta.load-css("highlight.js/scss/vs2015.scss");
 }
 
+$base-transition: background-color 0.083s ease-in-out;
+
 :root {
     --font-monospace: "Cascadia Code NF", "Cascadia Code PL", "Cascadia Code", "Cascadia Next SC", "Cascadia Next TC", "Cascadia Next JP", Consolas, "Courier New", "Liberation Mono", SFMono-Regular, Menlo, Monaco, monospace;
     --highlight-bg: #fff3cd;
@@ -168,7 +189,7 @@ function switchColorScheme() {
 }
 
 * {
-    transition: background-color 0.083s ease-in-out;
+    transition: $base-transition;
 }
 
 html {
@@ -317,5 +338,18 @@ footer {
     font-weight: normal;
     font-size: var(--type-ramp-minus-1-font-size);
     line-height: var(--type-ramp-minus-1-line-height);
+}
+
+.drill-enter-active {
+    transition: opacity 0.15s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.drill-leave-active {
+    transition: opacity 0.075s cubic-bezier(0.7, 0, 1, 0.5);
+}
+
+.drill-enter-from,
+.drill-leave-to {
+    opacity: 0;
 }
 </style>

@@ -1,139 +1,144 @@
 <template>
-    <h1>{{ title }}</h1>
-    <div class="stack-vertical" style="row-gap: 0.3rem;">
-        <SettingsCard>
-            <template #icon>
-                <DesignIdeas20Regular />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-output" class="unset">生成类型</h3>
-            </template>
-            <template #description>
-                选择生成卡片的类型。
-            </template>
-            <fluent-select placeholder="components" v-model="output"
-                style="min-width: calc(var(--base-height-multiplier) * 11.25px);">
-                <fluent-option value="components">控件</fluent-option>
-                <fluent-option value="html">HTML</fluent-option>
-                <fluent-option value="vue">Vue</fluent-option>
-                <fluent-option value="svg" disabled>SVG</fluent-option>
-            </fluent-select>
-        </SettingsCard>
-        <SettingsCard>
-            <template #icon>
-                <component :is="getTypeIcon(type)" />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-type" class="unset">卡片类型</h3>
-            </template>
-            <template #description>
-                选择卡片显示内容的类型。
-            </template>
-            <fluent-select placeholder="video" v-model="type"
-                style="min-width: calc(var(--base-height-multiplier) * 11.25px);">
-                <fluent-option v-for="(value, key) in types" :value="key">{{ value }}</fluent-option>
-            </fluent-select>
-        </SettingsCard>
-        <SettingsCard>
-            <template #icon>
-                <CardUI20Regular />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-id" class="unset">卡片 ID</h3>
-            </template>
-            <template #description>
-                输入卡片显示的哔哩哔哩{{ types[type] }}的 ID。
-            </template>
-            <fluent-text-field v-model="id" :placeholder="getExampleID(type)"></fluent-text-field>
-        </SettingsCard>
-        <SettingsExpander expanded="true">
-            <template #icon>
-                <DatabaseArrowDown20Regular />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-get-data" class="unset">获取数据</h3>
-            </template>
-            <template #description>
-                从哔哩哔哩获取 JSON 数据。(由于跨域限制无法自动获取信息，请手动在下方填入 JSON 数据)
-            </template>
-            <div class="setting-expander-content-grid">
-                <InputLabel label="输入 JSON">
+    <div>
+        <h1>{{ title }}</h1>
+        <div class="stack-vertical" style="row-gap: 0.3rem;">
+            <SettingsCard>
+                <template #icon>
+                    <DesignIdeas20Regular />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-output" class="unset">生成类型</h3>
+                </template>
+                <template #description>
+                    选择生成卡片的类型。
+                </template>
+                <fluent-select placeholder="components" v-model="output"
+                    style="min-width: calc(var(--base-height-multiplier) * 11.25px);">
+                    <fluent-option value="components">控件</fluent-option>
+                    <fluent-option value="html">HTML</fluent-option>
+                    <fluent-option value="vue">Vue</fluent-option>
+                    <fluent-option value="svg" disabled>SVG</fluent-option>
+                </fluent-select>
+            </SettingsCard>
+            <SettingsCard>
+                <template #icon>
+                    <component :is="getTypeIcon(type)" />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-type" class="unset">卡片类型</h3>
+                </template>
+                <template #description>
+                    选择卡片显示内容的类型。
+                </template>
+                <fluent-select placeholder="video" v-model="type"
+                    style="min-width: calc(var(--base-height-multiplier) * 11.25px);">
+                    <fluent-option v-for="(value, key) in types" :value="key">{{ value }}</fluent-option>
+                </fluent-select>
+            </SettingsCard>
+            <SettingsCard>
+                <template #icon>
+                    <CardUI20Regular />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-id" class="unset">卡片 ID</h3>
+                </template>
+                <template #description>
+                    输入卡片显示的哔哩哔哩{{ types[type] }}的 ID。
+                </template>
+                <fluent-text-field v-model="id" :placeholder="getExampleID(type)"></fluent-text-field>
+            </SettingsCard>
+            <SettingsExpander expanded="true">
+                <template #icon>
+                    <DatabaseArrowDown20Regular />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-get-data" class="unset">获取数据</h3>
+                </template>
+                <template #description>
+                    从哔哩哔哩获取 JSON 数据。(由于跨域限制无法自动获取信息，请手动在下方填入 JSON 数据)
+                </template>
+                <div class="setting-expander-content-grid">
+                    <InputLabel label="输入 JSON">
+                        <template #action>
+                            <div class="stack-horizontal"
+                                style="width: auto; column-gap: calc(var(--design-unit) * 1px);">
+                                <fluent-button title="这个按钮并不能正常使用" :disabled="!id"
+                                    @click="getApiAsync">自动</fluent-button>
+                                <fluent-anchor :href="getApiUrl()" target="_blank">手动</fluent-anchor>
+                            </div>
+                        </template>
+                        <fluent-text-area v-model="json" resize="vertical" style="width: 100%;"></fluent-text-area>
+                    </InputLabel>
+                </div>
+            </SettingsExpander>
+            <SettingsCard>
+                <template #icon>
+                    <ImageArrowForward20Regular />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-image-proxy" class="unset">图片代理</h3>
+                </template>
+                <template #description>
+                    设置封面图片的代理。
+                </template>
+                <fluent-text-field v-model="imageProxy"
+                    placeholder="https://images.weserv.nl/?url="></fluent-text-field>
+            </SettingsCard>
+            <SettingsCard>
+                <template #icon>
+                    <TagMultiple20Regular />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-info-types" class="unset">信息类型</h3>
+                </template>
+                <template #description>
+                    设置卡片显示信息的类型。(views, danmakus, comments, favorites, coins, likes)
+                </template>
+                <fluent-text-field v-model="InfoTypes" :placeholder="getDefaultInfoTypes(type)"></fluent-text-field>
+            </SettingsCard>
+            <SettingsCard>
+                <template #icon>
+                    <Color20Regular />
+                </template>
+                <template #header>
+                    <h3 id="bilibili-card-theme" class="unset">卡片主题</h3>
+                </template>
+                <template #description>
+                    选择卡片的主题样式。
+                </template>
+                <!-- @vue-generic {Combobox, "value" } -->
+                <ValueChangeHost v-model="theme" value-name="value" event-name="change" style="display: inherit;">
+                    <fluent-combobox placeholder="default" autocomplete="both" style="min-width: 0;">
+                        <fluent-option title="跟随系统">system</fluent-option>
+                        <fluent-option title="浅色">light</fluent-option>
+                        <fluent-option title="深色">dark</fluent-option>
+                        <fluent-option title="Fluent UI">fluent</fluent-option>
+                        <fluent-option title="Windose">windose</fluent-option>
+                    </fluent-combobox>
+                </ValueChangeHost>
+            </SettingsCard>
+            <div class="settings-card"
+                :style="{ paddingTop: 'calc(var(--design-unit) * 4px)', paddingRight: 'calc(var(--design-unit) * 4px)', paddingBottom: example ? 'calc(var(--design-unit) * 4px)' : 'calc(var(--design-unit) * 3px)', paddingLeft: 'calc(var(--design-unit) * 4px)' }">
+                <InputLabel label="预览" v-fill-color="neutralFillInputRest">
                     <template #action>
                         <div class="stack-horizontal" style="width: auto; column-gap: calc(var(--design-unit) * 1px);">
-                            <fluent-button title="这个按钮并不能正常使用" :disabled="!id" @click="getApiAsync">自动</fluent-button>
-                            <fluent-anchor :href="getApiUrl()" target="_blank">手动</fluent-anchor>
+                            <fluent-button v-show="example"
+                                @click="(e: MouseEvent) => onCopyClicked(e, example)">复制代码</fluent-button>
+                            <fluent-button
+                                @click="() => createExample(json, imageProxy, id, type, InfoTypes, theme)">生成卡片</fluent-button>
                         </div>
                     </template>
-                    <fluent-text-area v-model="json" resize="vertical" style="width: 100%;"></fluent-text-area>
+                    <div v-if="example" style="max-width: 100%;">
+                        <bilibili-card v-if="exampleType === 'components'" v-bind="props" />
+                        <ShadowRoot v-else-if="exampleType === 'html'">
+                            <div v-html="example"></div>
+                        </ShadowRoot>
+                        <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" :get-theme="getTheme" />
+                        <HighlightJS language="html" :code="example"
+                            style="margin-top: calc(var(--design-unit) * 1px); margin-bottom: 0; border-radius: 6px;" />
+                    </div>
                 </InputLabel>
             </div>
-        </SettingsExpander>
-        <SettingsCard>
-            <template #icon>
-                <ImageArrowForward20Regular />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-image-proxy" class="unset">图片代理</h3>
-            </template>
-            <template #description>
-                设置封面图片的代理。
-            </template>
-            <fluent-text-field v-model="imageProxy" placeholder="https://images.weserv.nl/?url="></fluent-text-field>
-        </SettingsCard>
-        <SettingsCard>
-            <template #icon>
-                <TagMultiple20Regular />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-info-types" class="unset">信息类型</h3>
-            </template>
-            <template #description>
-                设置卡片显示信息的类型。(views, danmakus, comments, favorites, coins, likes)
-            </template>
-            <fluent-text-field v-model="InfoTypes" :placeholder="getDefaultInfoTypes(type)"></fluent-text-field>
-        </SettingsCard>
-        <SettingsCard>
-            <template #icon>
-                <Color20Regular />
-            </template>
-            <template #header>
-                <h3 id="bilibili-card-theme" class="unset">卡片主题</h3>
-            </template>
-            <template #description>
-                选择卡片的主题样式。
-            </template>
-            <!-- @vue-generic {Combobox, "value" } -->
-            <ValueChangeHost v-model="theme" value-name="value" event-name="change" style="display: inherit;">
-                <fluent-combobox placeholder="default" autocomplete="both" style="min-width: 0;">
-                    <fluent-option title="跟随系统">system</fluent-option>
-                    <fluent-option title="浅色">light</fluent-option>
-                    <fluent-option title="深色">dark</fluent-option>
-                    <fluent-option title="Fluent UI">fluent</fluent-option>
-                    <fluent-option title="Windose">windose</fluent-option>
-                </fluent-combobox>
-            </ValueChangeHost>
-        </SettingsCard>
-        <div class="settings-card"
-            :style="{ paddingTop: 'calc(var(--design-unit) * 4px)', paddingRight: 'calc(var(--design-unit) * 4px)', paddingBottom: example ? 'calc(var(--design-unit) * 4px)' : 'calc(var(--design-unit) * 3px)', paddingLeft: 'calc(var(--design-unit) * 4px)' }">
-            <InputLabel label="预览" v-fill-color="neutralFillInputRest">
-                <template #action>
-                    <div class="stack-horizontal" style="width: auto; column-gap: calc(var(--design-unit) * 1px);">
-                        <fluent-button v-show="example"
-                            @click="(e: MouseEvent) => onCopyClicked(e, example)">复制代码</fluent-button>
-                        <fluent-button
-                            @click="() => createExample(json, imageProxy, id, type, InfoTypes, theme)">生成卡片</fluent-button>
-                    </div>
-                </template>
-                <div v-if="example" style="max-width: 100%;">
-                    <bilibili-card v-if="exampleType === 'components'" v-bind="props" />
-                    <ShadowRoot v-else-if="exampleType === 'html'">
-                        <div v-html="example"></div>
-                    </ShadowRoot>
-                    <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" :get-theme="getTheme" />
-                    <HighlightJS language="html" :code="example"
-                        style="margin-top: calc(var(--design-unit) * 1px); margin-bottom: 0; border-radius: 6px;" />
-                </div>
-            </InputLabel>
         </div>
     </div>
 </template>
@@ -161,22 +166,22 @@ import SettingsCard from "../components/SettingsCard.vue";
 import SettingsExpander from "../components/SettingsExpander.vue";
 import ValueChangeHost from "../components/ValueChangeHost.vue";
 import vFillColor from "../directives/fillColor";
-import DesignIdeas20Regular from "@fluentui/svg-icons/icons/design_ideas_20_regular.svg";
-import CardUI20Regular from "@fluentui/svg-icons/icons/card_ui_20_regular.svg";
-import DatabaseArrowDown20Regular from "@fluentui/svg-icons/icons/database_arrow_down_20_regular.svg";
-import ImageArrowForward20Regular from "@fluentui/svg-icons/icons/image_arrow_forward_20_regular.svg";
-import TagMultiple20Regular from "@fluentui/svg-icons/icons/tag_multiple_20_regular.svg";
-import Color20Regular from "@fluentui/svg-icons/icons/color_20_regular.svg";
-import VideoClip20Regular from "@fluentui/svg-icons/icons/video_clip_20_regular.svg";
-import Document20Regular from "@fluentui/svg-icons/icons/document_20_regular.svg";
-import Person20Regular from "@fluentui/svg-icons/icons/person_20_regular.svg";
-import Live20Regular from "@fluentui/svg-icons/icons/live_20_regular.svg";
-import MoviesAndTv20Regular from "@fluentui/svg-icons/icons/movies_and_tv_20_regular.svg";
-import MusicNote220Regular from "@fluentui/svg-icons/icons/music_note_2_20_regular.svg";
-import Feed20Regular from "@fluentui/svg-icons/icons/feed_20_regular.svg";
-import Collections20Regular from "@fluentui/svg-icons/icons/collections_20_regular.svg";
-import Album20Regular from "@fluentui/svg-icons/icons/album_20_regular.svg";
-import PresenceUnknown20Regular from "@fluentui/svg-icons/icons/presence_unknown_20_regular.svg";
+import DesignIdeas20Regular from "@fluentui/svg-icons/icons/design_ideas_20_regular.svg?component";
+import CardUI20Regular from "@fluentui/svg-icons/icons/card_ui_20_regular.svg?component";
+import DatabaseArrowDown20Regular from "@fluentui/svg-icons/icons/database_arrow_down_20_regular.svg?component";
+import ImageArrowForward20Regular from "@fluentui/svg-icons/icons/image_arrow_forward_20_regular.svg?component";
+import TagMultiple20Regular from "@fluentui/svg-icons/icons/tag_multiple_20_regular.svg?component";
+import Color20Regular from "@fluentui/svg-icons/icons/color_20_regular.svg?component";
+import VideoClip20Regular from "@fluentui/svg-icons/icons/video_clip_20_regular.svg?component";
+import Document20Regular from "@fluentui/svg-icons/icons/document_20_regular.svg?component";
+import Person20Regular from "@fluentui/svg-icons/icons/person_20_regular.svg?component";
+import Live20Regular from "@fluentui/svg-icons/icons/live_20_regular.svg?component";
+import MoviesAndTv20Regular from "@fluentui/svg-icons/icons/movies_and_tv_20_regular.svg?component";
+import MusicNote220Regular from "@fluentui/svg-icons/icons/music_note_2_20_regular.svg?component";
+import Feed20Regular from "@fluentui/svg-icons/icons/feed_20_regular.svg?component";
+import Collections20Regular from "@fluentui/svg-icons/icons/collections_20_regular.svg?component";
+import Album20Regular from "@fluentui/svg-icons/icons/album_20_regular.svg?component";
+import PresenceUnknown20Regular from "@fluentui/svg-icons/icons/presence_unknown_20_regular.svg?component";
 
 const HighlightJS = hljs.component;
 

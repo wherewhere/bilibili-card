@@ -3,9 +3,10 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import simpleHtmlPlugin from "vite-plugin-simple-html";
 import markdown from "./helpers/markdown";
-import eval from "./helpers/eval.mts";
+import eval from "./helpers/eval";
 import githubImporter from "./helpers/github-importer";
 import bilibiliCard from "../src/lib/bilibili-card";
+import cssnano from "cssnano";
 
 export default defineConfig({
     root: "dev",
@@ -37,6 +38,13 @@ export default defineConfig({
             scss: {
                 importers: [githubImporter]
             }
+        },
+        postcss: {
+            plugins: [
+                cssnano({
+                    preset: "advanced"
+                })
+            ]
         },
         devSourcemap: true
     },

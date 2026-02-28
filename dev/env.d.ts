@@ -21,3 +21,7 @@ declare module "javascript:new Date().getFullYear()" {
 declare module "js-beautify/js/src/html" {
     export default function style_html(html_source: string, options?: Record<string, string>, js_beautify?: Function, css_beautify?: Function): string;
 }
+
+declare module "@microsoft/clarity/src/utils" {
+    export function injectScript(projectId: string): void;
+}

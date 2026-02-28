@@ -1,18 +1,20 @@
 <template>
-    <ReadMe>
-        <div style="display: flex; flex-direction: column; row-gap: 0.5rem;">
-            <fluent-text-area placeholder="<bilibili-card></bilibili-card>" resize="vertical" warp="off"
-                v-attribute:rows="4" style="width: 100%; font-family: var(--font-monospace);" v-model="example">
-                代码：
-            </fluent-text-area>
-            <div>
-                <div style="display: flex; flex-direction: column;">
-                    <div class="label">显示：</div>
+    <div>
+        <ReadMe>
+            <div style="display: flex; flex-direction: column; row-gap: 0.5rem;">
+                <fluent-text-area placeholder="<bilibili-card></bilibili-card>" resize="vertical" warp="off"
+                    v-attribute:rows="4" style="width: 100%; font-family: var(--font-monospace);" v-model="example">
+                    代码：
+                </fluent-text-area>
+                <div>
+                    <div style="display: flex; flex-direction: column;">
+                        <div class="label">显示：</div>
+                    </div>
+                    <div style="display: block;" v-html="example"></div>
                 </div>
-                <div style="display: block;" v-html="example"></div>
             </div>
-        </div>
-    </ReadMe>
+        </ReadMe>
+    </div>
 </template>
 
 <script lang="ts" setup>
