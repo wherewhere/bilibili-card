@@ -73,6 +73,7 @@ export default [{
     },
     plugins: esFallbackPlugin
 }, {
+    external: ["@vue/compiler-sfc", "jsdom", "vite"],
     input: "src/index.ts",
     output: {
         format: "es",

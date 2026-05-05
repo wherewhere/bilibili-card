@@ -3,7 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import simpleHtmlPlugin from "vite-plugin-simple-html";
 import markdown from "./helpers/markdown";
-import eval from "./helpers/eval";
+import _eval from "./helpers/eval";
 import githubImporter from "./helpers/github-importer";
 import bilibiliCard from "../src/lib/bilibili-card";
 import cssnano from "cssnano";
@@ -31,7 +31,7 @@ export default defineConfig({
         }),
         bilibiliCard(),
         markdown,
-        eval
+        _eval
     ],
     css: {
         preprocessorOptions: {
@@ -42,7 +42,10 @@ export default defineConfig({
         postcss: {
             plugins: [
                 cssnano({
-                    preset: "advanced"
+                    preset: [
+                        "advanced",
+                        { discardUnused: { fontFace: false } }
+                    ],
                 })
             ]
         },
@@ -51,6 +54,10 @@ export default defineConfig({
     build: {
         outDir: "dist",
         sourcemap: true,
-        minify: "terser"
+        rolldownOptions: {
+            checks: {
+                pluginTimings: false
+            }
+        }
     }
 });
