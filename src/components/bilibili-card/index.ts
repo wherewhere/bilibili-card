@@ -144,7 +144,7 @@ export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCa
         this.setAttribute("likes", value);
     }
 
-    get InfoTypes() {
+    get infoTypes() {
         const value = this.getAttribute("info-types");
         if (value && typeof value === "string") {
             const types = value.split(/[,|\s+]/).filter(x => x != '');
@@ -154,8 +154,8 @@ export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCa
         }
         return getDefaultInfoTypes(this.type);
     }
-    set InfoTypes(value) {
-        this.setAttribute("info-types", Array.isArray(value) ? value.join(' ') : value);
+    set infoTypes(value) {
+        this.setAttribute("info-types", Array.isArray(value) ? value.join(' ') : value as any);
     }
 
     get imageProxy() {

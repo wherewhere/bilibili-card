@@ -324,7 +324,7 @@ export function connectedCallback(this: IBiliBiliCard) {
     duration.textContent = this.duration;
     duration.parentElement!.style.display = hasDuration(type) ? '' : "none";
     this.contents.title.textContent = this.title;
-    addInfoItems(this.contents.info, this.InfoTypes, this);
+    addInfoItems(this.contents.info, this.infoTypes, this);
     this.contents.type.textContent = getTypeName(type);
     this.contents.author.textContent = this.author;
 }
@@ -362,32 +362,32 @@ export function attributeChangedCallback(this: IBiliBiliCard, name: string, newV
             this.contents.duration.textContent = newValue || defaultDuration;
             break;
         case "views":
-            if (this.InfoTypes.includes("views")) {
+            if (this.infoTypes.includes("views")) {
                 addInfoItem(this.contents.info, "views", newValue || '0', canPlay(this.type));
             }
             break;
         case "danmakus":
-            if (this.InfoTypes.includes("danmakus")) {
+            if (this.infoTypes.includes("danmakus")) {
                 addInfoItem(this.contents.info, "danmakus", newValue || '0');
             }
             break;
         case "comments":
-            if (this.InfoTypes.includes("comments")) {
+            if (this.infoTypes.includes("comments")) {
                 addInfoItem(this.contents.info, "comments", newValue || '0');
             }
             break;
         case "favorites":
-            if (this.InfoTypes.includes("favorites")) {
+            if (this.infoTypes.includes("favorites")) {
                 addInfoItem(this.contents.info, "favorites", newValue || '0');
             }
             break;
         case "coins":
-            if (this.InfoTypes.includes("coins")) {
+            if (this.infoTypes.includes("coins")) {
                 addInfoItem(this.contents.info, "coins", newValue || '0');
             }
             break;
         case "likes":
-            if (this.InfoTypes.includes("likes")) {
+            if (this.infoTypes.includes("likes")) {
                 addInfoItem(this.contents.info, "likes", newValue || '0');
             }
             break;

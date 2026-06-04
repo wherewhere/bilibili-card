@@ -94,7 +94,7 @@
                 <template #description>
                     设置卡片显示信息的类型。(views, danmakus, comments, favorites, coins, likes)
                 </template>
-                <fluent-text-field v-model="InfoTypes" :placeholder="getDefaultInfoTypes(type)"></fluent-text-field>
+                <fluent-text-field v-model="infoTypes" :placeholder="getDefaultInfoTypes(type)"></fluent-text-field>
             </SettingsCard>
             <SettingsCard>
                 <template #icon>
@@ -125,7 +125,7 @@
                             <fluent-button v-show="example"
                                 @click="(e: MouseEvent) => onCopyClicked(e, example)">复制代码</fluent-button>
                             <fluent-button
-                                @click="() => createExample(json, imageProxy, id, type, InfoTypes, theme)">生成卡片</fluent-button>
+                                @click="() => createExample(json, imageProxy, id, type, infoTypes, theme)">生成卡片</fluent-button>
                         </div>
                     </template>
                     <div v-if="example" style="max-width: 100%;">
@@ -199,7 +199,7 @@ useSeoMeta({
 });
 
 const imageProxy = shallowRef('');
-const InfoTypes = shallowRef('');
+const infoTypes = shallowRef('');
 
 const types = {
     video: "视频",
@@ -315,12 +315,12 @@ const example = shallowRef('');
 const props = shallowRef({} as Omit<Props, "getTheme">);
 const output = shallowRef<"components" | "html" | "vue" | "svg">("components");
 const exampleType = shallowRef<typeof output.value>(output.value);
-function createExample(json: string, imageProxy: string, id: string, type: CardType, InfoTypes: string, theme: string) {
+function createExample(json: string, imageProxy: string, id: string, type: CardType, infoTypes: string, theme: string) {
     const message = getMessage(type, id, JSON.parse(json), console);
-    example.value = html_beautify(createElement(imageProxy, InfoTypes, message, theme) || '');
+    example.value = html_beautify(createElement(imageProxy, infoTypes, message, theme) || '');
     props.value = {
         imageProxy,
-        InfoTypes,
+        infoTypes,
         theme,
         ...message
     };
@@ -328,14 +328,14 @@ function createExample(json: string, imageProxy: string, id: string, type: CardT
 };
 
 const theme = shallowRef('');
-function createElement<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
+function createElement<T extends CardType>(imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
     switch (output.value) {
         case "components":
-            return createHost(imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
+            return createHost(imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
         case "vue":
-            return createHostWithTagName("BiliBiliCard", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
+            return createHostWithTagName("BiliBiliCard", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme).outerHTML;
         case "html":
-            const card = createCardWithTagName("div", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
+            const card = createCardWithTagName("div", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
             const link = document.createElement("link");
             link.rel = "stylesheet";
             link.href = getTheme(theme);

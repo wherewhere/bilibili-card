@@ -5,6 +5,7 @@ import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import postcssPresetEnv from "postcss-preset-env";
 import url from "./src/lib/import-url.mjs";
+import jscc from "rollup-plugin-jscc";
 
 const resolveConfig = resolve({
     extensions: [".ts"]
@@ -44,8 +45,14 @@ const urlConfig = url({
     fileName: "[dirname][name][extname]"
 });
 
+const esFallbackDefine = jscc({
+    values: {
+        _BROWSER: true
+    }
+});
+
 const esPlugin = [resolveConfig, babelESConfig, postcssConfig, urlConfig];
-const esFallbackPlugin = [resolveConfig, babelESFallbackConfig, postcssFallbackConfig, urlConfig];
+const esFallbackPlugin = [resolveConfig, babelESFallbackConfig, postcssFallbackConfig, urlConfig, esFallbackDefine];
 const dtsPlugin = [dtsConfig, postcssConfig];
 
 /** @type {import("rollup").RollupOptions[]} */
@@ -70,6 +77,17 @@ export default [{
         sourcemap: true,
         dir: "dist",
         entryFileNames: "[name].browser.js"
+    },
+    plugins: esFallbackPlugin
+}, {
+    external: ["@vue/compiler-sfc", "jsdom"],
+    input: "src/components/bilibili-card/bundle.ts",
+    output: {
+        format: "umd",
+        name: "BiliBiliCard",
+        sourcemap: true,
+        dir: "dist/components/bilibili-card",
+        entryFileNames: "index.browser.js"
     },
     plugins: esFallbackPlugin
 }, {

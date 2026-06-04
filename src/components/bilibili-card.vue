@@ -68,28 +68,28 @@ export interface Props {
     favorites?: string | number;
     coins?: string | number;
     likes?: string | number;
-    InfoTypes?: string | InfoType[];
+    infoTypes?: string | InfoType[];
     imageProxy?: string;
     theme?: string;
     getTheme?: (theme?: string | null) => string;
 }
 
-const { vid, type = "video", title, author, cover, duration, InfoTypes, imageProxy, theme, getTheme = x => x, ...props } = defineProps<Props>();
+const { vid, type = "video", title, author, cover, duration, infoTypes, imageProxy, theme, getTheme = x => x, ...props } = defineProps<Props>();
 const name = computed(() => getTypeName(type));
 const url = computed(() => getUrl(vid, type));
 const themeLink = computed(() => getTheme(theme));
 const backgroundImage = computed(() => cover ? `url(${getBackgroundUrl(imageProxy || defaultProxy, cover)})` : '');
 const hasDurationFlag = computed(() => hasDuration(type));
 
-function getInfoTypes(InfoTypes: string | InfoType[] | undefined, type: CardType) {
-    if (!InfoTypes) {
+function getInfoTypes(infoTypes: string | InfoType[] | undefined, type: CardType) {
+    if (!infoTypes) {
         return getDefaultInfoTypes(type);
     }
-    else if (InfoTypes instanceof Array) {
-        return InfoTypes as InfoType[];
+    else if (infoTypes instanceof Array) {
+        return infoTypes as InfoType[];
     }
-    else if (typeof InfoTypes === "string") {
-        return InfoTypes.split(/[,|\s+]/).filter(x => x != '') as InfoType[];
+    else if (typeof infoTypes === "string") {
+        return infoTypes.split(/[,|\s+]/).filter(x => x != '') as InfoType[];
     }
     else {
         return [];
@@ -97,7 +97,7 @@ function getInfoTypes(InfoTypes: string | InfoType[] | undefined, type: CardType
 }
 
 const infos = computed(() => {
-    return getInfoTypes(InfoTypes, type).map(InfoType => {
+    return getInfoTypes(infoTypes, type).map(InfoType => {
         return {
             type: InfoType,
             icon: getIcon(InfoType, canPlay(type)),

@@ -58,8 +58,8 @@ export declare interface IBiliBiliCard extends IBiliBiliCardInfo {
     get likes(): string;
     set likes(value);
 
-    get InfoTypes(): InfoType[];
-    set InfoTypes(value: InfoType[]);
+    get infoTypes(): readonly InfoType[];
+    set infoTypes(value: readonly InfoType[]);
 
     get imageProxy(): string;
     set imageProxy(value: string);

@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import simpleHtmlPlugin from "vite-plugin-simple-html";
+import jscc from "rollup-plugin-jscc";
 import markdown from "./helpers/markdown";
 import _eval from "./helpers/eval";
 import githubImporter from "./helpers/github-importer";
@@ -27,6 +28,11 @@ export default defineConfig({
                 sortSpaceSeparatedAttributeValues: true,
                 sortAttributes: true,
                 tagOmission: false
+            }
+        }),
+        jscc({
+            values: {
+                _BROWSER: true
             }
         }),
         bilibiliCard(),

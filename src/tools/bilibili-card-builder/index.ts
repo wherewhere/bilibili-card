@@ -127,7 +127,7 @@ function initHost<T extends Element = Element>(host: T) {
             this.setAttribute("likes", value);
         },
 
-        get InfoTypes() {
+        get infoTypes() {
             const value = this.getAttribute("info-types");
             if (value && typeof value === "string") {
                 const types = value.split(/[,|\s+]/).filter(x => x != '');
@@ -137,8 +137,8 @@ function initHost<T extends Element = Element>(host: T) {
             }
             return getDefaultInfoTypes(this.type);
         },
-        set InfoTypes(value) {
-            this.setAttribute("info-types", Array.isArray(value) ? value.join(' ') : value);
+        set infoTypes(value) {
+            this.setAttribute("info-types", Array.isArray(value) ? value.join(' ') : value as any);
         },
 
         get imageProxy() {
@@ -172,14 +172,14 @@ function attachHost<T extends Element = Element>(host: BiliBiliCardElement<T>) {
     host.bilibiliCard.connectedCallback();
 }
 
-export function createHost<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
-    return createHostWithTagName("bilibili-card", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
+export function createHost<T extends CardType>(imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme: string) {
+    return createHostWithTagName("bilibili-card", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
 }
 
 import { dom } from "../../helpers/dom";
 export { dom as window };
 
-export function createHostWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string): K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : HTMLElement {
+export function createHostWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string): K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : HTMLElement {
     const bilibiliCard = dom.document.createElement(tagName);
     if (vid) {
         bilibiliCard.setAttribute("vid", vid);
@@ -217,8 +217,8 @@ export function createHostWithTagName<K extends string, T extends CardType>(tagN
     if (likes) {
         bilibiliCard.setAttribute("likes", likes);
     }
-    if (InfoTypes) {
-        bilibiliCard.setAttribute("info-types", InfoTypes);
+    if (infoTypes) {
+        bilibiliCard.setAttribute("info-types", infoTypes);
     }
     if (imageProxy) {
         bilibiliCard.setAttribute("image-proxy", imageProxy);
@@ -229,12 +229,12 @@ export function createHostWithTagName<K extends string, T extends CardType>(tagN
     return bilibiliCard as any;
 }
 
-export function createCard<T extends CardType>(imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string) {
-    return createCardWithTagName("div", imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
+export function createCard<T extends CardType>(imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string) {
+    return createCardWithTagName("div", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
 }
 
-export function createCardWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, InfoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string) {
-    const bilibiliCard = createHostWithTagName(tagName, imageProxy, InfoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
+export function createCardWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string) {
+    const bilibiliCard = createHostWithTagName(tagName, imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
     praseElement(bilibiliCard);
     return bilibiliCard;
 }

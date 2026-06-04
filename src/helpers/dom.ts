@@ -1,3 +1,9 @@
 import { initDOMAsync } from "./node";
 
-export const dom = await initDOMAsync();
+/*#if _BROWSER
+const dom = window;
+//#else */
+const dom = await initDOMAsync();
+//#endif
+
+export { dom };
