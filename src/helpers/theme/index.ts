@@ -25,8 +25,9 @@ export function getTheme(theme?: string | null): string {
         case "auto":
         case "system":
         case "default":
-        default:
             return system;
+        default:
+            return theme;
     }
 }
 

@@ -27,5 +27,4 @@ import router from "./router";
 
 createApp(App).use(router).use(createHead()).mount("#vue-app");
 
-import "../src/components/bilibili-card/register";
-import "../src/helpers/theme/register";
+import "../src/components/bilibili-card/bundle";
