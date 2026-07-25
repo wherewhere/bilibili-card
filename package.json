@@ -41,8 +41,8 @@
     "url": "git+https://github.com/wherewhere/bilibili-card.git"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-typescript": "^7.0.0",
+    "@babel/preset-env": "^8.0.0",
+    "@babel/preset-typescript": "^8.0.0",
     "@fluentui/svg-icons": "^1.0.0",
     "@fluentui/web-components": "^2.0.0",
     "@highlightjs/vue-plugin": "^2.0.0",
@@ -58,7 +58,7 @@
     "cssnano": "^8.0.0",
     "cssnano-preset-advanced": "^8.0.0",
     "highlightjs-vue": "^1.0.0",
-    "js-beautify": "^1.0.0",
+    "js-beautify": "^2.0.0",
     "jsdom": "^29.0.0",
     "markdown-it-async": "^2.0.0",
     "markdown-it-highlightjs": "^4.0.0",
@@ -90,6 +90,7 @@
     }
   },
   "overrides": {
+    "@babel/core": "^8.0.0",
     "minimatch": "^10.0.0"
   }
 }

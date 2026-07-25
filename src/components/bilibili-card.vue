@@ -1,6 +1,7 @@
 <template>
     <ShadowRoot>
         <link v-if="themeLink" :href="themeLink" rel="stylesheet" />
+        <component v-if="shadowStyle" is="style">{{ shadowStyle }}</component>
         <div class="video-holder">
             <a class="default-flex full-width" target="_blank" rel="noopener noreferrer" :href="url"
                 style="max-height: 92px; display: flex; align-items: center;">
@@ -20,7 +21,8 @@
                 <div class="disable-event video-content-container">
                     <p class="double-ellipsis video-title" style="margin-bottom: 0px;">{{ title || defaultTitle }}</p>
                     <div class="video-card-info" style="display: flex;">
-                        <div v-for="value in infos" :class="['cover-info-item', value.type]" style="display: flex;">
+                        <div v-for="value in infos" :key="value.type" :class="['cover-info-item', value.type]"
+                            style="display: flex;">
                             <i class="iconfont">
                                 <svg :viewBox="value.icon.viewBox" style="width: 16px; height: 16px;">
                                     <path :d="value.icon.path"></path>
@@ -55,26 +57,33 @@ import { defaultTitle, defaultAuthor, defaultDuration, defaultProxy, canPlay, ha
 import type { InfoType, CardType } from "../types";
 import { ShadowRoot } from "vue-shadow-dom";
 
-export interface Props {
-    vid: string;
-    type?: CardType;
-    title?: string;
-    author?: string;
-    cover?: string;
-    duration?: string;
+export interface IBiliBiliCardInfo {
     views?: string | number;
     danmakus?: string | number;
     comments?: string | number;
     favorites?: string | number;
     coins?: string | number;
     likes?: string | number;
+}
+
+export interface IBiliBiliCard extends IBiliBiliCardInfo {
+    vid: string;
+    type?: CardType;
+    title?: string;
+    author?: string;
+    cover?: string;
+    duration?: string;
     infoTypes?: string | InfoType[];
     imageProxy?: string;
     theme?: string;
+}
+
+export interface Props extends IBiliBiliCard {
+    shadowStyle?: string;
     getTheme?: (theme?: string | null) => string;
 }
 
-const { vid, type = "video", title, author, cover, duration, infoTypes, imageProxy, theme, getTheme = x => x, ...props } = defineProps<Props>();
+const { vid, type = "video", title, author, cover, duration, infoTypes, imageProxy, theme, shadowStyle, getTheme = x => x, ...props } = defineProps<Props>();
 const name = computed(() => getTypeName(type));
 const url = computed(() => getUrl(vid, type));
 const themeLink = computed(() => getTheme(theme));

@@ -157,7 +157,7 @@ import { getApi, getMessage } from "../../src/tools/bilibili-card-message";
 import { createHost, createHostWithTagName, createCardWithTagName } from "../../src/tools/bilibili-card-builder";
 import { getTheme } from "../../src/helpers/theme/index";
 import type { CardInfo } from "../../src/types";
-import type { Props } from "../../src/components/bilibili-card.vue";
+import type { IBiliBiliCard } from "../../src/components/bilibili-card.vue";
 import { ShadowRoot } from "vue-shadow-dom";
 import hljs from "@highlightjs/vue-plugin";
 import BiliBiliCard from "../../src/components/bilibili-card.vue";
@@ -312,7 +312,7 @@ function onCopyClicked(event: MouseEvent, text: string) {
 };
 
 const example = shallowRef('');
-const props = shallowRef({} as Omit<Props, "getTheme">);
+const props = shallowRef<IBiliBiliCard>({ vid: '' });
 const output = shallowRef<"components" | "html" | "vue" | "svg">("components");
 const exampleType = shallowRef<typeof output.value>(output.value);
 function createExample(json: string, imageProxy: string, id: string, type: CardType, infoTypes: string, theme: string) {

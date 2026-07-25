@@ -28,6 +28,8 @@ const fillColor = shallowRef(inject<DesignToken<Swatch>>("fillColor", neutralFil
 </script>
 
 <style lang="scss">
+$settings-card-padding: calc(var(--design-unit) * 4px);
+
 .settings-card {
     display: block;
     box-sizing: border-box;
@@ -36,10 +38,9 @@ const fillColor = shallowRef(inject<DesignToken<Swatch>>("fillColor", neutralFil
     border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-layer-rest);
     border-radius: calc(var(--control-corner-radius) * 1px);
     box-shadow: var(--elevation-shadow-card-rest);
-    --settings-card-padding: calc(var(--design-unit) * 4px);
 
     .presenter {
-        padding: var(--settings-card-padding);
+        padding: $settings-card-padding;
     }
 }
 </style>

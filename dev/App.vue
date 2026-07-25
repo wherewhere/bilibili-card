@@ -11,7 +11,7 @@
                     </svg>
                 </span>
                 <fluent-tooltip class="title-tooltip" anchor="title-info">
-                    <BiliBiliCard :theme="theme" style="min-width: 300px;" />
+                    <BiliBiliCard :theme="theme" style="min-width: 300px;" :shadow-style="shadow" />
                 </fluent-tooltip>
             </div>
             <div style="flex-grow: 1;"></div>
@@ -76,6 +76,7 @@ import { useSeoMeta } from "@unhead/vue";
 import { useRoute } from "vue-router";
 import { useAnalytics } from "./helpers/analytics";
 import { name, keywords } from "../package.json";
+import shadow from "./styles/shadow.scss?inline";
 import theme from "../src/styles/bilibili-card.fluent.css?url";
 import year from "javascript:new Date().getFullYear()";
 import BiliBiliCard from "bilibili-card:BV1HJu1zzEH3";
@@ -205,7 +206,7 @@ body,
 </style>
 
 <style lang="scss" scoped>
-:deep(fluent-tooltip.title-tooltip) {
+fluent-tooltip.title-tooltip {
     &::part(tooltip) {
         padding: 0;
 

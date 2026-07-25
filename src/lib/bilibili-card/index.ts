@@ -25,13 +25,14 @@ export default function bilibiliCard(options = { image_proxy: "https://images.we
                     "<template>",
                     "<ShadowRoot>",
                     '<link v-if="theme" :href="theme" rel="stylesheet" />',
+                    '<component v-if="shadowStyle" is="style">{{ shadowStyle }}</component>',
                     card.outerHTML,
                     "</ShadowRoot>",
                     "</template>",
                     '',
                     "<script setup>",
                     'import { ShadowRoot } from "vue-shadow-dom";',
-                    "const { theme } = defineProps({ theme: String });",
+                    "defineProps({ theme: String, shadowStyle: String });",
                     "</script>"
                 ].join('\n');
                 return await compileSFCAsync(code, id);

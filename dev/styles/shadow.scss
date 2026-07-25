@@ -1,0 +1,11 @@
+.video-holder {
+    border-radius: calc(var(--control-corner-radius) * 1px);
+
+    .cover-box {
+        border-radius: calc(var(--control-corner-radius) * 1px) 0 0 calc(var(--control-corner-radius) * 1px);
+    }
+
+    .video-content-container {
+        border-radius: 0 calc(var(--control-corner-radius) * 1px) calc(var(--control-corner-radius) * 1px) 0;
+    }
+}
