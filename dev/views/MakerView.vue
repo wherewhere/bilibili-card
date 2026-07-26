@@ -1,3 +1,24 @@
+<script lang="ts">
+import {
+    provideFluentDesignSystem,
+    fluentAnchor,
+    fluentButton,
+    fluentCombobox,
+    fluentOption,
+    fluentSelect,
+    fluentTextField
+} from "@fluentui/web-components";
+provideFluentDesignSystem()
+    .register(
+        fluentAnchor(),
+        fluentButton(),
+        fluentCombobox(),
+        fluentOption(),
+        fluentSelect(),
+        fluentTextField()
+    );
+</script>
+
 <template>
     <div>
         <h1>{{ title }}</h1>
@@ -58,17 +79,14 @@
                     从哔哩哔哩获取 JSON 数据。(由于跨域限制无法自动获取信息，请手动在下方填入 JSON 数据)
                 </template>
                 <div class="setting-expander-content-grid">
-                    <InputLabel label="输入 JSON">
-                        <template #action>
-                            <div class="stack-horizontal"
-                                style="width: auto; column-gap: calc(var(--design-unit) * 1px);">
-                                <fluent-button title="这个按钮并不能正常使用" :disabled="!id"
-                                    @click="getApiAsync">自动</fluent-button>
-                                <fluent-anchor :href="getApiUrl()" target="_blank">手动</fluent-anchor>
-                            </div>
-                        </template>
-                        <fluent-text-area v-model="json" resize="vertical" style="width: 100%;"></fluent-text-area>
-                    </InputLabel>
+                    <CodeMirror
+                        height="calc(((var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 2) * 1px)"
+                        label="输入 JSON" indent-unit="  " v-model="json" resize="vertical" :language="jsonLanguage()">
+                        <div class="stack-horizontal" style="width: auto; column-gap: calc(var(--design-unit) * 1px);">
+                            <fluent-button title="这个按钮并不能正常使用" :disabled="!id" @click="getApiAsync">自动</fluent-button>
+                            <fluent-anchor :href="getApiUrl()" target="_blank">手动</fluent-anchor>
+                        </div>
+                    </CodeMirror>
                 </div>
             </SettingsExpander>
             <SettingsCard>
@@ -133,7 +151,8 @@
                         <ShadowRoot v-else-if="exampleType === 'html'">
                             <div v-html="example"></div>
                         </ShadowRoot>
-                        <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" :get-theme="getTheme" />
+                        <BiliBiliCard v-else-if="exampleType === 'vue'" v-bind="props" :get-theme="getTheme"
+                            shadow-style="1" />
                         <HighlightJS language="html" :code="example"
                             style="margin-top: calc(var(--design-unit) * 1px); margin-bottom: 0; border-radius: 6px;" />
                     </div>
@@ -145,13 +164,13 @@
 
 <script lang="ts" setup>
 import "../types";
-import "../helpers/fluentui";
 import "../helpers/hljs";
 import { shallowRef } from "vue";
 import { useSeoMeta } from "@unhead/vue";
 import { name } from "../../package.json";
 import { neutralFillInputRest, type Combobox } from "@fluentui/web-components";
 import html_beautify from "js-beautify/js/src/html";
+import { json as jsonLanguage } from "@codemirror/lang-json";
 import type { CardType } from "../../src/types";
 import { getApi, getMessage } from "../../src/tools/bilibili-card-message";
 import { createHost, createHostWithTagName, createCardWithTagName } from "../../src/tools/bilibili-card-builder";
@@ -161,6 +180,7 @@ import type { IBiliBiliCard } from "../../src/components/bilibili-card.vue";
 import { ShadowRoot } from "vue-shadow-dom";
 import hljs from "@highlightjs/vue-plugin";
 import BiliBiliCard from "../../src/components/bilibili-card.vue";
+import CodeMirror from "../components/CodeMirror.vue";
 import InputLabel from "../components/InputLabel.vue";
 import SettingsCard from "../components/SettingsCard.vue";
 import SettingsExpander from "../components/SettingsExpander.vue";
@@ -352,29 +372,27 @@ function createElement<T extends CardType>(imageProxy: string, infoTypes: string
         url("https://cdn.jsdelivr.net/gh/haldai/org-slides@master/style/fonts/DinkieBitmap-9px.woff2") format("woff2");
 }
 
-:deep(fluent-select)::part(listbox),
-:deep(fluent-combobox)::part(listbox) {
+fluent-select::part(listbox),
+fluent-combobox::part(listbox) {
     max-height: calc(var(--base-height-multiplier) * 30px);
 }
 
-.stack-vertical,
-:deep(.stack-vertical) {
+.stack-vertical {
     display: flex;
     flex-direction: column;
 }
 
-.stack-horizontal,
-:deep(.stack-horizontal) {
+.stack-horizontal {
     display: flex;
     flex-direction: row;
 }
 
-:deep(h6.unset),
-:deep(h5.unset),
-:deep(h4.unset),
-:deep(h3.unset),
-:deep(h2.unset),
-:deep(h1.unset) {
+h6.unset,
+h5.unset,
+h4.unset,
+h3.unset,
+h2.unset,
+h1.unset {
     margin-top: 0;
     margin-bottom: 0;
     font-weight: inherit;

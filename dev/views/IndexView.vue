@@ -2,16 +2,12 @@
     <div>
         <ReadMe>
             <div style="display: flex; flex-direction: column; row-gap: 0.5rem;">
-                <fluent-text-area placeholder="<bilibili-card></bilibili-card>" resize="vertical" warp="off"
-                    v-attribute:rows="4" style="width: 100%; font-family: var(--font-monospace);" v-model="example">
-                    代码：
-                </fluent-text-area>
-                <div>
-                    <div style="display: flex; flex-direction: column;">
-                        <div class="label">显示：</div>
-                    </div>
+                <CodeMirror label="代码：" placeholder="<bilibili-card></bilibili-card>" resize="vertical"
+                    :language="htmlLanguage" style="width: 100%; font-family: var(--font-monospace);"
+                    v-model="example" />
+                <InputLabel label="显示：">
                     <div style="display: block;" v-html="example"></div>
-                </div>
+                </InputLabel>
             </div>
         </ReadMe>
     </div>
@@ -20,9 +16,35 @@
 <script lang="ts" setup>
 import "../types";
 import { shallowRef } from "vue";
+import { html } from "@codemirror/lang-html";
 import ReadMe from "../../README.md";
-import vAttribute from "../directives/attribute";
+import CodeMirror from "../components/CodeMirror.vue";
+import InputLabel from "../components/InputLabel.vue";
 
+const htmlLanguage = html({
+    extraTags: {
+        "bilibili-card": {
+            attrs: {
+                vid: null,
+                type: ["video", "article", "user", "live", "bangumi", "audio", "dynamic", "favorite", "album"],
+                title: null,
+                author: null,
+                cover: null,
+                duration: null,
+                views: null,
+                danmakus: null,
+                comments: null,
+                favorites: null,
+                coins: null,
+                likes: null,
+                "info-types": ["views", "danmakus", "comments", "favorites", "coins", "likes"],
+                "image-proxy": null,
+                theme: ["system", "light", "dark", "fluent", "windose"],
+                "shadow-style": null
+            }
+        }
+    }
+});
 const example = shallowRef(
     `<bilibili-card vid="BV1y54y1a768" type="video" title="【UWP】手把手教你安装 UWP 安装包" author="where-where"
     cover="http://i2.hdslb.com/bfs/archive/41bc750cb5011bb036e008a716a89158c7eb7bb5.jpg" duration="05:21" views="2.2万"
@@ -49,15 +71,5 @@ const example = shallowRef(
 
 :deep(table) {
     border-collapse: separate;
-}
-
-:deep(fluent-text-area) textarea {
-    width: 100%;
-}
-
-:deep(fluent-text-area[wrap='off'])::part(control) {
-    white-space-collapse: preserve;
-    text-wrap-mode: nowrap;
-    overflow-wrap: normal;
 }
 </style>

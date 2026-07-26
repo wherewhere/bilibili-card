@@ -21,6 +21,38 @@ import {
 import defaultTheme from "../../styles/bilibili-card.css?url";
 import { dom } from "../../helpers/dom";
 
+interface IStyleHost {
+    setStyle(style: string): void;
+}
+
+class SheetStyleHost implements IStyleHost {
+    style: CSSStyleSheet;
+    constructor(shadowRoot: ShadowRoot) {
+        const style = this.style = new CSSStyleSheet();
+        shadowRoot.adoptedStyleSheets = [style];
+    }
+    setStyle(style: string) {
+        return this.style.replace(style);
+    }
+}
+
+class ElementStyleHost implements IStyleHost {
+    style: HTMLStyleElement;
+    constructor(shadowRoot: ShadowRoot) {
+        const style = this.style = dom.document.createElement("style");
+        shadowRoot.appendChild(style);
+    }
+    setStyle(style: string) {
+        this.style.textContent = style;
+    }
+}
+
+function createStyleHost(shadowRoot: ShadowRoot) {
+    return "adoptedStyleSheets" in shadowRoot
+        ? new SheetStyleHost(shadowRoot)
+        : new ElementStyleHost(shadowRoot);
+}
+
 export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCard {
     declare isLoaded: boolean;
     declare contents: {
@@ -32,6 +64,7 @@ export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCa
         type: HTMLLabelElement;
         author: HTMLSpanElement;
         theme: HTMLLinkElement;
+        style: SheetStyleHost | ElementStyleHost;
     };
 
     static getTheme = (theme?: string | null) => {
@@ -39,7 +72,7 @@ export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCa
     }
 
     static get observedAttributes() {
-        return ["vid", "type", "title", "author", "cover", "duration", "views", "danmakus", "comments", "favorites", "coins", "likes", "info-types", "image-proxy", "theme"];
+        return ["vid", "type", "title", "author", "cover", "duration", "views", "danmakus", "comments", "favorites", "coins", "likes", "info-types", "image-proxy", "theme", "shadow-style"];
     }
 
     constructor() {
@@ -52,9 +85,12 @@ export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCa
         theme.rel = "stylesheet";
         shadowRoot.appendChild(theme);
 
+        const style = createStyleHost(shadowRoot);
+
         initCard.call(this, shadowRoot);
 
         this.contents.theme = theme;
+        this.contents.style = style;
     }
 
     get vid(): string | null {
@@ -172,19 +208,33 @@ export default class BiliBiliCard extends dom.HTMLElement implements IBiliBiliCa
         this.setAttribute("theme", value);
     }
 
+    get shadowStyle() {
+        return this.getAttribute("shadow-style") || '';
+    }
+    set shadowStyle(value) {
+        this.setAttribute("shadow-style", value);
+    }
+
     connectedCallback() {
         this.contents.theme.href = this.theme;
+        this.contents.style.setStyle(this.shadowStyle);
         connectedCallback.call(this);
         this.isLoaded = true;
     }
 
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-        if (!this.isLoaded || oldValue === newValue) { return; }
-        if (name === "theme") {
-            this.contents.theme.href = BiliBiliCard.getTheme(newValue);
-        }
-        else {
-            attributeChangedCallback.call(this, name, newValue);
+        if (this.isLoaded && oldValue !== newValue) {
+            switch (name) {
+                case "theme":
+                    this.contents.theme.href = BiliBiliCard.getTheme(newValue);
+                    break;
+                case "shadow-style":
+                    this.contents.style.setStyle(newValue || '');
+                    break;
+                default:
+                    attributeChangedCallback.call(this, name, newValue);
+                    break;
+            }
         }
     }
 

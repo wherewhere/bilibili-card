@@ -1,7 +1,7 @@
 <template>
-    <ShadowRoot>
+    <ShadowRoot :adoptedStyleSheets="adoptedStyleSheets">
         <link v-if="themeLink" :href="themeLink" rel="stylesheet" />
-        <component v-if="shadowStyle" is="style">{{ shadowStyle }}</component>
+        <component v-if="!isAdoptedStyleSheetsSupported && shadowStyle" is="style">{{ shadowStyle }}</component>
         <div class="video-holder">
             <a class="default-flex full-width" target="_blank" rel="noopener noreferrer" :href="url"
                 style="max-height: 92px; display: flex; align-items: center;">
@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { getBackgroundUrl } from "../helpers/url";
 import { defaultTitle, defaultAuthor, defaultDuration, defaultProxy, canPlay, hasDuration, getIcon, getTypeName, getUrl, getDefaultInfoTypes } from "../helpers/builder";
 import type { InfoType, CardType } from "../types";
@@ -114,4 +114,22 @@ const infos = computed(() => {
         };
     });
 });
+
+let adoptedStyleSheets: CSSStyleSheet[] | undefined = undefined;
+const isAdoptedStyleSheetsSupported = "adoptedStyleSheets" in window.ShadowRoot.prototype;
+if (isAdoptedStyleSheetsSupported) {
+    const style = new CSSStyleSheet();
+    adoptedStyleSheets = [style];
+    if (shadowStyle) {
+        style.replace(shadowStyle);
+    }
+    watch(
+        () => shadowStyle,
+        (newValue, oldValue) => {
+            if (newValue !== oldValue) {
+                style.replace(newValue || '');
+            }
+        }
+    );
+}
 </script>

@@ -60,7 +60,7 @@ $settings-card-vertical-header-content-spacing: calc(var(--design-unit) * 2px) 0
     }
 
     span.description {
-        font-size: var(--settings-card-description-font-size);
+        font-size: $settings-card-description-font-size;
         color: var(--neutral-fill-strong-hover);
     }
 

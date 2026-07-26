@@ -1,3 +1,16 @@
+<script lang="ts">
+import {
+    provideFluentDesignSystem,
+    fluentAnchoredRegion,
+    fluentTooltip
+} from "@fluentui/web-components";
+provideFluentDesignSystem()
+    .register(
+        fluentAnchoredRegion(),
+        fluentTooltip()
+    );
+</script>
+
 <template>
     <div class="layout">
         <div class="header" style="height: 50px;">

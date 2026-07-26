@@ -1,0 +1,72 @@
+details {
+    box-sizing: border-box;
+    font-family: var(--body-font);
+    font-size: var(--type-ramp-base-font-size);
+    line-height: var(--type-ramp-base-line-height);
+    font-weight: initial;
+    font-variation-settings: var(--type-ramp-base-font-variations);
+    flex-direction: column;
+
+    summary {
+        display: flex;
+        list-style: none;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--neutral-fill-layer-rest);
+        border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-layer-rest);
+        border-radius: calc(var(--layer-corner-radius) * 1px);
+        color: var(--neutral-foreground-rest);
+        padding: calc(var(--design-unit) * 3 * 1px) 0;
+
+        .content-presenter {
+            padding: 0 calc(var(--design-unit) * 2 * 1px);
+        }
+
+        .expand-collapse-chevron-border {
+            display: flex;
+            width: calc((var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px);
+            height: calc((var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px);
+            margin: calc(var(--design-unit) * 2 * 1px);
+            border-radius: calc(var(--control-corner-radius) * 1px);
+            background: var(--neutral-fill-stealth-rest-on-neutral-fill-layer-rest);
+            align-items: center;
+            justify-content: center;
+
+            .expand-collapse-chevron-down,
+            .expand-collapse-chevron-up {
+                fill: currentcolor;
+            }
+
+            .expand-collapse-chevron-up {
+                display: none;
+            }
+        }
+
+        &:not(:disabled):hover .expand-collapse-chevron-border {
+            background: var(--neutral-fill-stealth-hover-on-neutral-fill-layer-rest);
+        }
+    }
+
+    &[open] summary {
+        border-radius: calc(var(--layer-corner-radius) * 1px) calc(var(--layer-corner-radius) * 1px) 0 0;
+
+        .expand-collapse-chevron-border {
+            .expand-collapse-chevron-down {
+                display: none;
+            }
+
+            .expand-collapse-chevron-up {
+                display: inline;
+            }
+        }
+    }
+
+    .expander-content {
+        background: var(--neutral-fill-layer-alt-rest);
+        border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-layer-rest);
+        border-top: none;
+        border-bottom-left-radius: calc((var(--layer-corner-radius) - var(--stroke-width)) * 1px);
+        border-bottom-right-radius: calc((var(--layer-corner-radius) - var(--stroke-width)) * 1px);
+        padding: calc(var(--design-unit) * 2 * 1px);
+    }
+}

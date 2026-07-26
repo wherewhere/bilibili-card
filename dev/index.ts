@@ -1,15 +1,9 @@
 import {
     provideFluentDesignSystem,
-    fluentAnchoredRegion,
-    fluentTextArea,
-    fluentTooltip,
     baseLayerLuminance,
     StandardLuminance
 } from "@fluentui/web-components";
-provideFluentDesignSystem().register(
-    fluentAnchoredRegion(),
-    fluentTextArea(),
-    fluentTooltip());
+provideFluentDesignSystem().register();
 
 import { isDarkTheme } from "color-scheme-checker/src/theme";
 import { registerColorSchemeListener } from "color-scheme-checker/src/monitor";
