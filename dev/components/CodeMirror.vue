@@ -115,7 +115,11 @@ onUnmounted(() => {
 
         &:not(:disabled):active,
         &:not(:disabled):focus-within {
-            border-bottom: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
+            border-bottom: calc(var(--stroke-width) * 2px) solid var(--accent-fill-rest);
+
+            :deep(.cm-editor) {
+                margin-bottom: calc(var(--stroke-width) * -1px);
+            }
         }
     }
 
@@ -184,7 +188,8 @@ onUnmounted(() => {
 
                 &:not(:disabled):active,
                 &:not(:disabled):focus-within {
-                    border-bottom: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
+                    padding-bottom: calc(0.2em - 1px);
+                    border-bottom: calc(var(--stroke-width) * 2px) solid var(--accent-fill-rest);
                 }
             }
         }
