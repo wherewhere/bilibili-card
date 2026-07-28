@@ -2,11 +2,10 @@
     <div>
         <ReadMe>
             <div style="display: flex; flex-direction: column; row-gap: 0.5rem;">
-                <CodeMirror label="代码：" placeholder="<bilibili-card></bilibili-card>" resize="vertical"
-                    :language="htmlLanguage" style="width: 100%; font-family: var(--font-monospace);"
-                    v-model="example" />
+                <CodeMirror label="代码：" placeholder="<bilibili-card></bilibili-card>" v-model="example"
+                    :language="htmlLanguage" style="font-family: var(--font-monospace);" />
                 <InputLabel label="显示：">
-                    <div style="display: block;" v-html="example"></div>
+                    <div v-html="example"></div>
                 </InputLabel>
             </div>
         </ReadMe>
