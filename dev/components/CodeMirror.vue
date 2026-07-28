@@ -112,12 +112,14 @@ onUnmounted(() => {
     outline: none;
     overflow: auto;
     transition: border-color 0.083s ease-in-out, background-color 0.083s ease-in-out;
+    padding-bottom: calc(var(--stroke-width) * 1px);
 
     @media (forced-colors: none) {
 
         &:not(:disabled):active,
         &:not(:disabled):focus-within {
             border-bottom: calc(var(--stroke-width) * 2px) solid var(--accent-fill-rest);
+            padding-bottom: 0;
         }
     }
 
