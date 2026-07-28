@@ -101,6 +101,8 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .code-mirror {
+    display: flex;
+    flex-direction: column;
     background: padding-box linear-gradient(var(--neutral-fill-input-rest), var(--neutral-fill-input-rest)), border-box var(--neutral-stroke-input-rest);
     border: calc(var(--stroke-width) * 1px) solid transparent;
     border-radius: calc(var(--control-corner-radius) * 1px);
@@ -116,19 +118,14 @@ onUnmounted(() => {
         &:not(:disabled):active,
         &:not(:disabled):focus-within {
             border-bottom: calc(var(--stroke-width) * 2px) solid var(--accent-fill-rest);
-
-            :deep(.cm-editor) {
-                margin-bottom: calc(var(--stroke-width) * -1px);
-            }
         }
     }
 
     :deep(.cm-editor) {
         background: none;
         outline: none;
-        width: fit-content;
-        min-width: 100%;
-        height: 100%;
+        min-width: fit-content;
+        flex: 1;
 
         .cm-scroller,
         .cm-diagnostic,
@@ -137,10 +134,48 @@ onUnmounted(() => {
             font-family: var(--font-monospace);
         }
 
-        .cm-tooltip-section {
-            padding: 3px 8px;
-            white-space: pre-wrap;
-            font-family: var(--font-monospace);
+        .cm-tooltip-autocomplete {
+            opacity: 1;
+            box-shadow: var(--elevation-shadow-flyout);
+            background: var(--fill-color);
+            border-radius: calc(var(--layer-corner-radius) * 1px);
+            box-sizing: border-box;
+            padding: calc((var(--design-unit) - var(--stroke-width)) * 1px);
+            border: calc(var(--stroke-width) * 1px) solid transparent;
+            transition: opacity 0.083s ease-in-out;
+
+            @starting-style {
+                opacity: 0;
+            }
+
+            >ul>li {
+                background: var(--neutral-fill-stealth-rest);
+                border-radius: calc(var(--control-corner-radius) * 1px);
+                border: calc(var(--stroke-width) * 1px) solid transparent;
+                box-sizing: border-box;
+                color: var(--neutral-foreground-rest);
+                padding: calc(var(--stroke-width) * 2px) calc(var(--stroke-width) * 4px);
+
+                &:not(:disabled):hover {
+                    background: var(--neutral-fill-stealth-hover);
+                }
+
+                &:not(:disabled):active {
+                    background: var(--neutral-fill-stealth-active);
+                }
+
+                &[aria-selected]:not(:disabled) {
+                    background: var(--neutral-fill-secondary-rest);
+                }
+
+                &[aria-selected]:not(:disabled):hover {
+                    background: var(--neutral-fill-secondary-hover);
+                }
+
+                &[aria-selected]:not(:disabled):active {
+                    background: var(--neutral-fill-secondary-active);
+                }
+            }
         }
 
         .cm-gutters {
