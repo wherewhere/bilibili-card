@@ -1,4 +1,4 @@
-import type { CardInfo, CardType } from "../../types";
+import type { CardInfo, CardType } from "../../types/index.ts";
 
 function formatLargeNumber(num: number): string {
     return (num >= 1E8)

@@ -8,12 +8,13 @@
 </template>
 
 <script lang="ts" setup>
+import "../styles/fonts.scss";
 import { onMounted, onUnmounted, useTemplateRef, watch } from "vue";
 import { basicSetup } from "codemirror";
 import { Compartment, type Extension } from "@codemirror/state";
 import { indentUnit } from "@codemirror/language";
 import { keymap, placeholder, EditorView } from "@codemirror/view";
-import { vscodeDark, vscodeLight } from "@uiw/codemirror-theme-vscode";
+import { vscodeDark, vscodeLight } from "../helpers/theme";
 import { vscodeKeymap } from "@replit/codemirror-vscode-keymap";
 import { isDarkTheme } from "color-scheme-checker/src/theme";
 import { registerColorSchemeListener, unregisterColorSchemeListener } from "color-scheme-checker/src/monitor";
@@ -113,6 +114,7 @@ onUnmounted(() => {
     overflow: auto;
     transition: border-color 0.083s ease-in-out, background-color 0.083s ease-in-out;
     padding-bottom: calc(var(--stroke-width) * 1px);
+    scrollbar-width: thin;
 
     @media (forced-colors: none) {
 
@@ -129,7 +131,6 @@ onUnmounted(() => {
         min-width: fit-content;
         flex: 1;
 
-        .cm-scroller,
         .cm-diagnostic,
         .cm-completionInfo,
         .cm-tooltip-autocomplete>ul {
@@ -144,44 +145,52 @@ onUnmounted(() => {
             box-sizing: border-box;
             padding: calc((var(--design-unit) - var(--stroke-width)) * 1px);
             border: calc(var(--stroke-width) * 1px) solid transparent;
-            transition: opacity 0.083s ease-in-out;
+            transition: opacity 0.083s ease-in-out, background-color 0.083s ease-in-out;
 
             @starting-style {
                 opacity: 0;
             }
 
-            >ul>li {
-                background: var(--neutral-fill-stealth-rest);
-                border-radius: calc(var(--control-corner-radius) * 1px);
-                border: calc(var(--stroke-width) * 1px) solid transparent;
-                box-sizing: border-box;
-                color: var(--neutral-foreground-rest);
-                padding: calc(var(--stroke-width) * 2px) calc(var(--stroke-width) * 4px);
+            >ul {
+                scrollbar-width: thin;
 
-                &:not(:disabled):hover {
-                    background: var(--neutral-fill-stealth-hover);
-                }
+                >li {
+                    background: var(--neutral-fill-stealth-rest);
+                    border-radius: calc(var(--control-corner-radius) * 1px);
+                    border: calc(var(--stroke-width) * 1px) solid transparent;
+                    box-sizing: border-box;
+                    color: var(--neutral-foreground-rest);
+                    padding: calc(var(--stroke-width) * 2px) calc(var(--stroke-width) * 4px);
+                    transition: background-color 0.083s ease-in-out;
 
-                &:not(:disabled):active {
-                    background: var(--neutral-fill-stealth-active);
-                }
+                    &:not(:disabled):hover {
+                        background: var(--neutral-fill-stealth-hover);
+                    }
 
-                &[aria-selected]:not(:disabled) {
-                    background: var(--neutral-fill-secondary-rest);
-                }
+                    &:not(:disabled):active {
+                        background: var(--neutral-fill-stealth-active);
+                    }
 
-                &[aria-selected]:not(:disabled):hover {
-                    background: var(--neutral-fill-secondary-hover);
-                }
+                    &[aria-selected]:not(:disabled) {
+                        background: var(--neutral-fill-secondary-rest);
+                    }
 
-                &[aria-selected]:not(:disabled):active {
-                    background: var(--neutral-fill-secondary-active);
+                    &[aria-selected]:not(:disabled):hover {
+                        background: var(--neutral-fill-secondary-hover);
+                    }
+
+                    &[aria-selected]:not(:disabled):active {
+                        background: var(--neutral-fill-secondary-active);
+                    }
                 }
             }
         }
 
         .cm-gutters {
+            border-right-width: calc(var(--stroke-width) * 1px);
+            border-right-style: solid;
             border-radius: calc((var(--control-corner-radius) - 1) * 1px) 0 0 calc((var(--control-corner-radius) - 1) * 1px);
+            transition: background-color 0.083s ease-in-out;
         }
 
         .cm-panels {
@@ -235,6 +244,20 @@ onUnmounted(() => {
             display: inline-flex;
             vertical-align: middle;
             align-items: center;
+        }
+
+        .cm-searchMatch {
+            background-color: rgba(234, 92, 0, 0.33);
+        }
+
+        .cm-searchMatch-selected {
+            background-color: rgba(234, 92, 0, 0.22);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .cm-searchMatch-selected {
+                background-color: #9E6A03;
+            }
         }
     }
 }

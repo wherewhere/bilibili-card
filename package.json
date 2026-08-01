@@ -2,6 +2,7 @@
   "name": "bilibili-card",
   "version": "1.1.11",
   "description": "A web components insert a bilibili video card into your page or article, some of css code is copy from bilibili.",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,6 +49,7 @@
     "@codemirror/lang-json": "^6.0.0",
     "@fluentui/svg-icons": "^1.0.0",
     "@fluentui/web-components": "^2.0.0",
+    "@fontsource/cascadia-code": "^5.0.0",
     "@highlightjs/vue-plugin": "^2.0.0",
     "@microsoft/clarity": "^1.0.0",
     "@replit/codemirror-vscode-keymap": "^6.0.0",
@@ -56,6 +58,7 @@
     "@rollup/plugin-url": "^8.0.0",
     "@types/babel__core": "^7.0.0",
     "@types/jsdom": "^28.0.0",
+    "@types/node": "^26.0.0",
     "@uiw/codemirror-theme-vscode": "^4.0.0",
     "@unhead/vue": "^3.0.0",
     "@vitejs/plugin-vue": "^6.0.0",
@@ -68,6 +71,7 @@
     "jsdom": "^29.0.0",
     "markdown-it-async": "^2.0.0",
     "markdown-it-highlightjs": "^4.0.0",
+    "mime": "^4.0.0",
     "postcss-preset-env": "^11.0.0",
     "rollup": "^4.0.0",
     "rollup-plugin-dts": "^6.0.0",
@@ -85,7 +89,7 @@
   },
   "peerDependencies": {
     "@vue/compiler-sfc": "^3.0.0",
-    "jsdom": "^29.0.0"
+    "jsdom": "^30.0.0"
   },
   "peerDependenciesMeta": {
     "jsdom": {

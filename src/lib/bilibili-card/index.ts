@@ -1,7 +1,7 @@
 import type { Plugin } from "vite";
-import type { CardType } from "../../types";
-import { compileSFCAsync } from "./compiler-sfc";
-import createCardAsync from "../create-card";
+import type { CardType } from "../../types/index.ts";
+import { compileSFCAsync } from "./compiler-sfc.ts";
+import createCardAsync from "../create-card/index.ts";
 
 export default function bilibiliCard(options = { image_proxy: "https://images.weserv.nl/?url=" }): Plugin {
     return {

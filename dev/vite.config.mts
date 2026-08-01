@@ -3,11 +3,12 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import simpleHtmlPlugin from "vite-plugin-simple-html";
 import jscc from "rollup-plugin-jscc";
-import markdown from "./helpers/markdown";
-import _eval from "./helpers/eval";
-import githubImporter from "./helpers/github-importer";
-import bilibiliCard from "../src/lib/bilibili-card";
+import markdown from "./helpers/markdown.mts";
+import _eval from "./helpers/eval.mts";
+import githubImporter from "./helpers/github-importer.mts";
+import bilibiliCard from "../src/lib/bilibili-card/index.ts" with {type: "module"};
 import cssnano from "cssnano";
+import getOutputOptions from "./helpers/output.mts";
 
 export default defineConfig({
     root: "dev",
@@ -63,7 +64,8 @@ export default defineConfig({
         rolldownOptions: {
             checks: {
                 pluginTimings: false
-            }
+            },
+            output: getOutputOptions()
         }
     }
 });

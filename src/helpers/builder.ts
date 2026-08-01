@@ -4,9 +4,9 @@ import type {
     InfoType,
     IBiliBiliCardInfo,
     IBiliBiliCard
-} from "../types";
+} from "../types/index.ts";
 
-import { dom } from "./dom";
+import { dom } from "./dom.ts";
 
 function getVid(id: string) {
     const type = id.slice(0, 2).toUpperCase();
@@ -215,7 +215,7 @@ export function getDefaultInfoTypes(value: CardType) {
     }
 }
 
-import { getBackgroundUrl, defaultProxy } from "./url";
+import { getBackgroundUrl, defaultProxy } from "./url.ts";
 
 export const defaultTitle = "哔哩哔哩 (゜-゜)つロ 干杯~";
 export const defaultAuthor = "2233";

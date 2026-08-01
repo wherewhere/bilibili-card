@@ -1,6 +1,6 @@
-import type { CardType } from "../../types";
-import * as bilibiliCardMessage from "../../tools/bilibili-card-message";
-import * as bilibiliCardBuilder from "../../tools/bilibili-card-builder";
+import type { CardType } from "../../types/index.ts";
+import * as bilibiliCardMessage from "../../tools/bilibili-card-message/index.ts";
+import * as bilibiliCardBuilder from "../../tools/bilibili-card-builder/index.ts";
 
 export default async function createCardAsync<T extends boolean>(imageProxy: string, id: string, type: CardType, infoTypes: string, theme: string, isComponent: T, log: { warn: (arg0: string) => void; } = console) {
     if (!id?.length) { return; }

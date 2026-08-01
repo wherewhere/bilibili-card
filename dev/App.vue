@@ -85,8 +85,10 @@ provideFluentDesignSystem()
 <script lang="ts" setup>
 import "./types";
 import { computed, shallowRef, watch } from "vue";
-import { useSeoMeta } from "@unhead/vue";
+import { useSeoMeta, useHead } from "@unhead/vue";
 import { useRoute } from "vue-router";
+import { isDarkTheme } from "color-scheme-checker/src/theme";
+import { registerColorSchemeListener } from "color-scheme-checker/src/monitor";
 import { useAnalytics } from "./helpers/analytics";
 import { name, keywords } from "../package.json";
 import shadow from "./styles/shadow.scss?inline";
@@ -118,6 +120,18 @@ useSeoMeta({
     articleTag: keywords
 });
 useAnalytics();
+
+document.querySelectorAll("meta[name=theme-color]").forEach(meta => meta.remove());
+const head = useHead({
+    meta: [
+        { name: "theme-color", content: isDarkTheme() ? "#60c9fc" : "#036ac4" }
+    ]
+});
+registerColorSchemeListener(isDark => head.patch({
+    meta: [
+        { name: "theme-color", content: isDark ? "#60c9fc" : "#036ac4" }
+    ]
+}));
 
 const route = useRoute();
 watch(
@@ -182,8 +196,6 @@ function switchColorScheme() {
 $base-transition: background-color 0.083s ease-in-out;
 
 :root {
-    --font-monospace: "Cascadia Code NF", "Cascadia Code PL", "Cascadia Code", "Cascadia Next SC", "Cascadia Next TC", "Cascadia Next JP", Consolas, "Courier New", "Liberation Mono", SFMono-Regular, Menlo, Monaco, monospace;
-    --highlight-bg: #fff3cd;
     --highlight-bg: #fff3cd;
     --content-padding: 1rem;
     color-scheme: light;

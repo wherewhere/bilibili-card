@@ -3,9 +3,9 @@ import type {
     InfoType,
     CardInfo,
     IBiliBiliCard
-} from "../../types";
+} from "../../types/index.ts";
 
-import "../../helpers/polyfill";
+import "../../helpers/polyfill.ts";
 
 import {
     getDefaultInfoTypes,
@@ -17,7 +17,7 @@ import {
     connectedCallback,
     attributeChangedCallback,
     getInfo
-} from "../../helpers/builder";
+} from "../../helpers/builder.ts";
 
 declare interface BiliBiliCard<T extends Element = Element> extends IBiliBiliCard {
     host: T;
@@ -176,7 +176,7 @@ export function createHost<T extends CardType>(imageProxy: string, infoTypes: st
     return createHostWithTagName("bilibili-card", imageProxy, infoTypes, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }, theme);
 }
 
-import { dom } from "../../helpers/dom";
+import { dom } from "../../helpers/dom.ts";
 export { dom as window };
 
 export function createHostWithTagName<K extends string, T extends CardType>(tagName: K, imageProxy: string, infoTypes: string, { vid, type, title, author, cover, duration, views, danmakus, comments, favorites, coins, likes }: CardInfo<T>, theme?: string): K extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[K] : HTMLElement {

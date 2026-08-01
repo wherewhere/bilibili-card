@@ -1,4 +1,4 @@
-import { initDOMAsync } from "./node";
+import { initDOMAsync } from "./node.ts";
 
 /*#if _BROWSER
 const dom = window;
