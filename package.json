@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "vite ./dev",
     "build": "rollup -c",
-    "build-dev": "vite build ./dev"
+    "build-dev": "vite build ./dev",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "bilibili",

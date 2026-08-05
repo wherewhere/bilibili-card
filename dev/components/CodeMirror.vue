@@ -3,11 +3,12 @@
         <template #action>
             <slot></slot>
         </template>
-        <div class="code-mirror" ref="root" :style="{ resize: resize, height: height }"></div>
+        <div class="code-mirror" ref="root" :style="{ resize, height }"></div>
     </InputLabel>
 </template>
 
 <script lang="ts" setup>
+import "../types";
 import "../styles/fonts.scss";
 import { onMounted, onUnmounted, useTemplateRef, watch } from "vue";
 import { basicSetup } from "codemirror";
@@ -21,7 +22,7 @@ import { registerColorSchemeListener, unregisterColorSchemeListener } from "colo
 import type { Property } from "csstype";
 import InputLabel from "./InputLabel.vue";
 
-const { indentUnit: _indentUnit = "    ", placeholder: _placeholder = '', language } = defineProps<{
+const { height, indentUnit: _indentUnit = "    ", placeholder: _placeholder = '', language } = defineProps<{
     label?: string,
     resize?: "none" | "vertical" | "horizontal" | "both",
     height?: Property.Height<(string & {}) | 0>,
@@ -96,7 +97,15 @@ onMounted(() => {
 });
 onUnmounted(() => {
     unregisterColorSchemeListener(updateTheme);
-    editor?.destroy();
+    if (editor) {
+        if (!height) {
+            const parent = editor.dom.parentElement;
+            if (parent) {
+                parent.style.height = `${parent.offsetHeight}px`;
+            }
+        }
+        editor.destroy();
+    }
 });
 </script>
 
