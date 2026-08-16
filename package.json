@@ -1,6 +1,6 @@
 {
   "name": "bilibili-card",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "A web components insert a bilibili video card into your page or article, some of css code is copy from bilibili.",
   "type": "module",
   "main": "dist/index.js",

@@ -22,7 +22,7 @@ provideFluentDesignSystem()
 <template>
     <div>
         <h1>{{ title }}</h1>
-        <div class="stack-vertical" style="row-gap: 0.3rem;">
+        <div class="stack-vertical" style="row-gap: 0.3rem; container-type: inline-size;">
             <SettingsCard>
                 <template #icon>
                     <DesignIdeas20Regular />

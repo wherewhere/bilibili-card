@@ -68,8 +68,10 @@ provideFluentDesignSystem()
         </div>
         <div class="content">
             <RouterView v-slot="{ Component }">
-                <Transition name="drill" mode="out-in">
-                    <component :is="Component" />
+                <Transition name="fade" mode="out-in">
+                    <KeepAlive include="IndexView,MakerView">
+                        <component :is="Component" />
+                    </KeepAlive>
                 </Transition>
             </RouterView>
         </div>
@@ -365,16 +367,16 @@ footer {
     line-height: var(--type-ramp-minus-1-line-height);
 }
 
-.drill-enter-active {
+.fade-enter-active {
     transition: opacity 0.15s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
-.drill-leave-active {
+.fade-leave-active {
     transition: opacity 0.075s cubic-bezier(0.7, 0, 1, 0.5);
 }
 
-.drill-enter-from,
-.drill-leave-to {
+.fade-enter-from,
+.fade-leave-to {
     opacity: 0;
 }
 </style>
